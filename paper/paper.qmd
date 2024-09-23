@@ -45,17 +45,9 @@ library(dplyr)
 library(lubridate)
 library(here)
 
-# Load the data
-subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
-busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
-
-# Convert the Time column to a proper time format
-subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
-busData$Time <- hm(busData$Time)
-
-# Extract the hour from the Time column
-subwayData$Hour <- hour(subwayData$Time)
-busData$Hour <- hour(busData$Time)
+# Load the cleaned data
+subwayData <- read.csv(here::here("./data/analysis_data/analysis_data.csv"))
+busData <- read.csv(here::here("./data/analysis_data/analysis_data_bus.csv"))
 
 # Aggregate data by hour to calculate total and mean delays
 hourly_delays_subway <- subwayData %>%
@@ -93,16 +85,22 @@ ggplot(hourly_avg_combined_long, aes(x = factor(Hour), y = Mean_Delay, fill = Ty
   theme(legend.position = "top", 
         plot.title = element_text(hjust = 0.5, face = "bold"))
 ```
-Two main takeaways from the figure: one, that the magnitude of delays is generally the same with each other, and two, that the average
-delay time for buses is around 4-5 times more than that of subways. This confirms the intuition that subways generally are a more time-reliable way to get somewhere than buses, and we will therefore focus on subways from hereonwards in our quest for the most reliable transit plan.
+Two main takeaways from the figure: one, that the average magnitude of delays is generally the same over the day, whether it be for subways or buses, and two, that the average delay time for buses is around 4-5 times more than that of subways. This confirms the intuition that subways generally are a more time-reliable way to get somewhere than buses, and we will therefore focus on subways from hereonwards in our quest for the most reliable transit plan.
 
 While we don't know the total frequency of subways and therefore cannot calculate an "average delay per ride" statistic, what we can do is sum up the delay at each hour of day to still obtain an estimator for how much delay you're likely to encounter in a trip during each respective hour, as shown in @fig-times-total. 
-
-
 ```{r}
 #| label: fig-times-total
 #| fig-cap: total delay times
 #| echo: false
+
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the cleaned data
+subwayData <- read.csv(here::here("./data/analysis_data/analysis_data.csv"))
+busData <- read.csv(here::here("./data/analysis_data/analysis_data_bus.csv"))
 
 # Reshape data for total delays
 hourly_delays_subway <- subwayData %>%
@@ -124,6 +122,17 @@ transit during these times is the most prone to delays. According to the @ttc_li
 #| label: fig-times-adjusted
 #| fig-cap: Delay time adjusted for the approximate subway load
 #| echo: false
+
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the cleaned data
+subwayData <- read.csv(here::here("./data/analysis_data/analysis_data.csv"))
+busData <- read.csv(here::here("./data/analysis_data/analysis_data_bus.csv"))
+
+# Function to adjust subway delays
 adjust_subway_delays <- function(data) {
   data %>%
     mutate(Adjusted_Delay = ifelse(Hour %in% 6:9 | Hour %in% 15:19, Min.Delay / 2, Min.Delay))
@@ -145,8 +154,6 @@ ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
        y = "Delay (Minutes)") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, face = "bold"))
-
-
 
 ```
 
