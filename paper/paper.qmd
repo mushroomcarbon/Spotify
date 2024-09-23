@@ -3,43 +3,44 @@ title: "TTC delays: when they happen and how to be punctual"
 subtitle: "Insight into when delays disproportionately tend to happen and related statistics"
 author: 
   - Andrew Goh
-thanks: "Code and data are available at: LINK."
+thanks: "Code and data are available at: LINK. @talia, @thereferencecanbewhatever, @dplyr were used in this paper."
 date: today
 date-format: long
-abstract: "TBA"
+abstract: "This paper uses data from Open Data Toronto (@opendatatoronto) on TTC subway and bus
+delays to analyze how the delays are generally distributed w.r.t. the time of day. Mean, total, and adjusted
+statistics are graphed and discussed to reach a conclusion."
 format: pdf
 number-sections: true
 bibliography: references.bib
 ---
 
-```{r}
-#| include: false
-#| warning: false
-#| message: false
-
-library(tidyverse)
-
-data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
-
-```
-
-
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @talia, @opendatatorotno, and @rohan.
+The TTC, as Toronto's primary public transport network, is the means for many
+to get about in the city. At an annual cost of ~$1.4k CAD, it remains the vastly more 
+economical means of transport in Toronto, especially compared to driving costs
+averaging $13k-16k per year, according to a CAA estimate by the @ttc_know_your_ttc.
 
-The remainder of this paper is structured as follows. @sec-mydatasection
+With its network of subways, the average TTC rider will be, comparatively, less affected by traffic as
+the average driver is, but all is not always smooth sailing with the TTC either. Delays, whether
+it be in the bus or subway systems, are decently common in the TTC family of transportation devices,
+with each delay potentially ruining an hour's worth of brisk preparation and a day's worth of planning.
 
-
+While everyone has their own understanding of delays, with discrepancies amplified by personal
+experience and survivor's bias, we look into the data to determine just when and how delays happen.
 
 # Data {#sec-mydatasection}
 
-Some of our data is of penguins (@fig-marriage), from @palmerpenguins.
+Armed with the simple driving question of how I can reduce delays in my day-to-day transits,
+we first graph the mean subway and bus delay data (@fig-times-mean) to have a broad understanding of the data.
 ```{r}
 #| label: fig-times-mean
 #| fig-cap: Subway delays w.r.t. time of day
 #| echo: false
+#| warning: false
+#| message: false
 
+library(tidyverse)
 library(dplyr)
 library(lubridate)
 library(here)
@@ -92,6 +93,12 @@ ggplot(hourly_avg_combined_long, aes(x = factor(Hour), y = Mean_Delay, fill = Ty
   theme(legend.position = "top", 
         plot.title = element_text(hjust = 0.5, face = "bold"))
 ```
+Two main takeaways from the figure: one, that the magnitude of delays is generally the same with each other, and two, that the average
+delay time for buses is around 4-5 times more than that of subways. This confirms the intuition that subways generally are a more time-reliable way to get somewhere than buses, and we will therefore focus on subways from hereonwards in our quest for the most reliable transit plan.
+
+While we don't know the total frequency of subways and therefore cannot calculate an "average delay per ride" statistic, what we can do is sum up the delay at each hour of day to still obtain an estimator for how much delay you're likely to encounter in a trip during each respective hour, as shown in @fig-times-total. 
+
+
 ```{r}
 #| label: fig-times-total
 #| fig-cap: total delay times
@@ -110,9 +117,12 @@ ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, face = "bold"))
 ```
+From the data here, it seems that 8-9am and 3-5pm seem to be the worst offenders, which would suggest that
+transit during these times is the most prone to delays. According to the @ttc_line_1_schedule, though, subways run at approximately double the frequency during these rush hours, accounting for the increase in total delay times by sheer volume. Finally, adjusting for this by halving the relative delay times for the aforementioned rush hours (6-9am, 3-7pm), we obtain @fig-times-adjusted.
+
 ```{r}
-#| label: fig-times-adjustedd
-#| fig-cap: delay time adjusted for the approximate subway load
+#| label: fig-times-adjusted
+#| fig-cap: Delay time adjusted for the approximate subway load
 #| echo: false
 adjust_subway_delays <- function(data) {
   data %>%
@@ -130,7 +140,7 @@ hourly_delays_subway <- subwayData %>%
 # Plot: Adjusted total subway delays by hour of day
 ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
   geom_bar(stat = "identity", fill = "steelblue") +
-  labs(title = "Total Subway Delays by Hour of Day Adjusted for Load Differences", 
+  labs(title = "Total Subway Delays by Hour of Day Adjusted for Capacity", 
        x = "Hour of Day", 
        y = "Delay (Minutes)") +
   theme_minimal() +
@@ -139,42 +149,16 @@ ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
 
 
 ```
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-
-
-
 
 # Discussion
 
-## First discussion point {#sec-first-point}
+Surprisingly, peak hours are the most consistent hours of them all, at least when compared to the off-hours of the TTC.
+A potential reason for this could be the higher-stress situation leading to tighter schedules, the lack of shift changes, or even the general alertness of drivers, among others - this, however, is not the focus nor concern of our current investigation.
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+As to the average delay amount, given that a delay happens, we look at average ridership data from @metrolinx_rtp and @average_distance, stating that "local" trips take around 4.2km on average. Average distance between stations, calculated using data from @ttc_conventional_system_2023, is 70 stations / 70.1km for approximately 1km per station (on average) and a resulting average of around 4 stations per trip. 
 
-## Second discussion point
-
-## Third discussion point
-
-## Weaknesses and next steps
-
-Weaknesses and next steps should also be included.
-
-\newpage
-
-\appendix
-
-# Appendix {-}
-
-
-# Additional data details
-
-
-
+Assuming a carry-over delay for your specific subway arriving at each of the 4 stations, we conclude that for the average trip during peak hour, leaving 10-15 minutes early is a fairly safe margin to ensure punctual arrival even in the case of delays.
 \newpage
 
 
 # References
-
-

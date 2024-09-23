@@ -12,6 +12,7 @@
 
 library(opendatatoronto)
 library(dplyr)
+library(tidyverse)
 
 # get package
 package <- show_package("996cfe8d-fb35-40ce-b569-698d51fc683b")
@@ -29,3 +30,11 @@ data <- filter(resources, row_number()==10) %>%
 
 #### Save data ####
 write_csv(data, "data/raw_data/raw_data.csv") 
+
+
+# get package
+package <- show_package("e271cdae-8788-4980-96ce-6a5c95bc6618")
+resources <- list_package_resources("e271cdae-8788-4980-96ce-6a5c95bc6618")
+data <- filter(resources, row_number()==10) %>% 
+  get_resource()
+write_csv(data, "data/raw_data/raw_data_bus.csv") 
