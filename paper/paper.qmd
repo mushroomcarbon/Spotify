@@ -1,0 +1,180 @@
+---
+title: "TTC delays: when they happen and how to be punctual"
+subtitle: "Insight into when delays disproportionately tend to happen and related statistics"
+author: 
+  - Andrew Goh
+thanks: "Code and data are available at: LINK."
+date: today
+date-format: long
+abstract: "TBA"
+format: pdf
+number-sections: true
+bibliography: references.bib
+---
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+
+data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
+
+```
+
+
+# Introduction
+
+You can and should cross-reference sections and sub-sections. We use @talia, @opendatatorotno, and @rohan.
+
+The remainder of this paper is structured as follows. @sec-mydatasection
+
+
+
+# Data {#sec-mydatasection}
+
+Some of our data is of penguins (@fig-marriage), from @palmerpenguins.
+```{r}
+#| label: fig-times-mean
+#| fig-cap: Subway delays w.r.t. time of day
+#| echo: false
+
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+
+# Aggregate data by hour to calculate total and mean delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE), 
+            Mean_Delay_Subway = mean(Min.Delay, na.rm = TRUE))
+
+hourly_delays_bus <- busData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Bus = sum(Min.Delay, na.rm = TRUE), 
+            Mean_Delay_Bus = mean(Min.Delay, na.rm = TRUE))
+
+# Combine subway and bus data for comparison
+hourly_delays_combined <- hourly_delays_subway %>%
+  full_join(hourly_delays_bus, by = "Hour")
+
+# Reshape data for average delays
+hourly_avg_combined_long <- hourly_delays_combined %>%
+  pivot_longer(cols = starts_with("Mean"), 
+               names_to = "Type", 
+               values_to = "Mean_Delay") %>%
+  mutate(Type = recode(Type, 
+                       "Mean_Delay_Subway" = "Subway", 
+                       "Mean_Delay_Bus" = "Bus"))
+
+# Plot 1: Average delays by hour of day (combined subway and bus)
+ggplot(hourly_avg_combined_long, aes(x = factor(Hour), y = Mean_Delay, fill = Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Average Delays by Hour of Day (Subway vs Bus)", 
+       x = "Hour of Day", 
+       y = "Average Delay (Minutes)", 
+       fill = "Type") +
+  scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
+  theme_minimal() +
+  theme(legend.position = "top", 
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+```
+```{r}
+#| label: fig-times-total
+#| fig-cap: total delay times
+#| echo: false
+
+# Reshape data for total delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE))
+
+ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Total Subway Delays by Hour of Day", 
+       x = "Hour of Day", 
+       y = "Total Delay (Minutes)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+```
+```{r}
+#| label: fig-times-adjustedd
+#| fig-cap: delay time adjusted for the approximate subway load
+#| echo: false
+adjust_subway_delays <- function(data) {
+  data %>%
+    mutate(Adjusted_Delay = ifelse(Hour %in% 6:9 | Hour %in% 15:19, Min.Delay / 2, Min.Delay))
+}
+
+# Apply the adjustment to subway data
+subwayData <- adjust_subway_delays(subwayData)
+
+# Aggregate the adjusted data by hour for total delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Adjusted_Delay, na.rm = TRUE))
+
+# Plot: Adjusted total subway delays by hour of day
+ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Total Subway Delays by Hour of Day Adjusted for Load Differences", 
+       x = "Hour of Day", 
+       y = "Delay (Minutes)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+
+
+
+```
+Talk more about it.
+
+And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+
+
+
+
+
+# Discussion
+
+## First discussion point {#sec-first-point}
+
+If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+
+## Second discussion point
+
+## Third discussion point
+
+## Weaknesses and next steps
+
+Weaknesses and next steps should also be included.
+
+\newpage
+
+\appendix
+
+# Appendix {-}
+
+
+# Additional data details
+
+
+
+\newpage
+
+
+# References
+
+
