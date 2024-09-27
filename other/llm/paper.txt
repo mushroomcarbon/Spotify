@@ -83,7 +83,7 @@ This will give you a scatter plot where each point represents the delay at a spe
 
 You said:
 Warning	
-Warning: [38;5;232mRemoved 22949 rows containing missing values or values outside the scale range (geom_point()).[39m
+Warning: [38;5;232mRemoved 22949 rows containing missing values or values outside the scale range (geom_point()).[39m
 ChatGPT said:
 ChatGPT
 The warning you're seeing suggests that there are missing or out-of-range values in your dataset, likely in the Min.Delay or Time columns. This may be due to:
@@ -860,3 +860,207 @@ Plot Output:
 The resulting plot will display the total delays per hour for subway services only.
 The delays are grouped by hour of the day on the x-axis, and the total delay in minutes on the y-axis.
 Let me know if you'd like further adjustments!
+
+make a separate graph for the stdev of the data like this:
+
+#| label: fig-times-mean
+#| fig-cap: Subway delays w.r.t. time of day
+#| echo: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the cleaned data
+subwayData <- read.csv(here::here("./data/analysis_data/analysis_data.csv"))
+busData <- read.csv(here::here("./data/analysis_data/analysis_data_bus.csv"))
+
+# Aggregate data by hour to calculate total and mean delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(
+    Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE),
+    Mean_Delay_Subway = mean(Min.Delay, na.rm = TRUE)
+  )
+
+hourly_delays_bus <- busData %>%
+  group_by(Hour) %>%
+  summarise(
+    Total_Delay_Bus = sum(Min.Delay, na.rm = TRUE),
+    Mean_Delay_Bus = mean(Min.Delay, na.rm = TRUE)
+  )
+
+# Combine subway and bus data for comparison
+hourly_delays_combined <- hourly_delays_subway %>%
+  full_join(hourly_delays_bus, by = "Hour")
+
+# Reshape data for average delays
+hourly_avg_combined_long <- hourly_delays_combined %>%
+  pivot_longer(
+    cols = starts_with("Mean"),
+    names_to = "Type",
+    values_to = "Mean_Delay"
+  ) %>%
+  mutate(Type = recode(Type,
+    "Mean_Delay_Subway" = "Subway",
+    "Mean_Delay_Bus" = "Bus"
+  ))
+
+# Plot 1: Average delays by hour of day (combined subway and bus)
+ggplot(hourly_avg_combined_long, aes(x = factor(Hour), y = Mean_Delay, fill = Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    title = "Average Delays by Hour of Day (Subway vs Bus)",
+    x = "Hour of Day",
+    y = "Average Delay (Minutes)",
+    fill = "Type"
+  ) +
+  scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(hjust = 0.5, face = "bold")
+  )
+ChatGPT said:
+ChatGPT
+To create a separate graph for the standard deviation of the data (subway and bus delays), you can follow a similar structure to the mean delay plot. This can be done by calculating the standard deviation (sd) for each group and plotting it.
+
+Here's a separate graph that follows your structure:
+
+r
+Copy code
+#| label: fig-times-stdev
+#| fig-cap: Subway delays standard deviation w.r.t. time of day
+#| echo: false
+#| warning: false
+#| message: false
+
+# Calculate standard deviation for subway and bus data by hour
+hourly_sd_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(
+    StdDev_Delay_Subway = sd(Min.Delay, na.rm = TRUE)
+  )
+
+hourly_sd_bus <- busData %>%
+  group_by(Hour) %>%
+  summarise(
+    StdDev_Delay_Bus = sd(Min.Delay, na.rm = TRUE)
+  )
+
+# Combine subway and bus data for standard deviation comparison
+hourly_sd_combined <- hourly_sd_subway %>%
+  full_join(hourly_sd_bus, by = "Hour")
+
+# Reshape data for standard deviations
+hourly_sd_combined_long <- hourly_sd_combined %>%
+  pivot_longer(
+    cols = starts_with("StdDev"),
+    names_to = "Type",
+    values_to = "StdDev_Delay"
+  ) %>%
+  mutate(Type = recode(Type,
+    "StdDev_Delay_Subway" = "Subway",
+    "StdDev_Delay_Bus" = "Bus"
+  ))
+
+# Plot 2: Standard deviation of delays by hour of day (combined subway and bus)
+ggplot(hourly_sd_combined_long, aes(x = factor(Hour), y = StdDev_Delay, fill = Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    title = "Standard Deviation of Delays by Hour of Day (Subway vs Bus)",
+    x = "Hour of Day",
+    y = "Standard Deviation of Delay (Minutes)",
+    fill = "Type"
+  ) +
+  scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(hjust = 0.5, face = "bold")
+  )
+Explanation:
+The code starts by calculating the standard deviation of delays for both the subway and bus data.
+It then combines the two datasets and reshapes them to a long format suitable for plotting.
+Finally, the graph is created using ggplot2 with the same styling as the mean delay plot.
+This will generate a bar plot showing the standard deviation of delays for each hour of the day, allowing you to compare the variability in delays between subway and bus services.
+
+
+
+
+
+
+You said:
+plot median delay too in the same graph as the mean one?
+ChatGPT said:
+ChatGPT
+To add the median delay to the same graph as the mean delay, you can modify the existing graph by including another set of bars for the median delay. This can be done by calculating the median values and combining them with the mean delay data.
+
+Here's how you can update your existing code to include both mean and median delays in the same graph:
+
+r
+Copy code
+#| label: fig-times-mean-median
+#| fig-cap: Mean and Median Subway Delays w.r.t. Time of Day
+#| echo: false
+#| warning: false
+#| message: false
+
+# Calculate total, mean, and median delays by hour for subway and bus
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(
+    Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE),
+    Mean_Delay_Subway = mean(Min.Delay, na.rm = TRUE),
+    Median_Delay_Subway = median(Min.Delay, na.rm = TRUE)
+  )
+
+hourly_delays_bus <- busData %>%
+  group_by(Hour) %>%
+  summarise(
+    Total_Delay_Bus = sum(Min.Delay, na.rm = TRUE),
+    Mean_Delay_Bus = mean(Min.Delay, na.rm = TRUE),
+    Median_Delay_Bus = median(Min.Delay, na.rm = TRUE)
+  )
+
+# Combine subway and bus data for comparison
+hourly_delays_combined <- hourly_delays_subway %>%
+  full_join(hourly_delays_bus, by = "Hour")
+
+# Reshape data for mean and median delays
+hourly_avg_median_combined_long <- hourly_delays_combined %>%
+  pivot_longer(
+    cols = c("Mean_Delay_Subway", "Median_Delay_Subway", "Mean_Delay_Bus", "Median_Delay_Bus"),
+    names_to = c("Type", "Statistic"),
+    names_sep = "_Delay_",
+    values_to = "Value"
+  ) %>%
+  mutate(
+    Type = recode(Type, "Subway" = "Subway", "Bus" = "Bus"),
+    Statistic = recode(Statistic, "Mean" = "Mean", "Median" = "Median")
+  )
+
+# Plot: Mean and Median delays by hour of day (combined subway and bus)
+ggplot(hourly_avg_median_combined_long, aes(x = factor(Hour), y = Value, fill = interaction(Type, Statistic))) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    title = "Mean and Median Delays by Hour of Day (Subway vs Bus)",
+    x = "Hour of Day",
+    y = "Delay (Minutes)",
+    fill = "Type & Statistic"
+  ) +
+  scale_fill_manual(values = c("Subway.Mean" = "steelblue", "Subway.Median" = "lightblue", "Bus.Mean" = "tomato", "Bus.Median" = "orange")) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(hjust = 0.5, face = "bold")
+  )
+Explanation:
+Data Calculation: The code now includes median delay calculations (Median_Delay_Subway and Median_Delay_Bus).
+Data Transformation: It reshapes the data using pivot_longer() to include both Mean and Median values in a format suitable for plotting.
+Plotting: The interaction(Type, Statistic) creates combined labels for the fill aesthetic, distinguishing between mean and median values for each type of transit (Subway and Bus).
+Color Mapping: Different colors are set for each combination of Type and Statistic to visually separate mean and median delays.
+This graph will now display both mean and median delays in one plot, making it easy to compare the central tendency (mean) and the midpoint (median) of delays for each hour of the day.

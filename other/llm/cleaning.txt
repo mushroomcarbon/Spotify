@@ -144,3 +144,113 @@ NA Removal:
 The na.omit() function remains unchanged, as it will work with the modified column name.
 Summary
 This code will successfully select the Time, Date, Min Delay, and Hour columns from your dataframes and remove any rows containing NA values, even with the space in the Min Delay column name. Let me know if you have any more questions or need further adjustments!
+
+delete rows where min.delay is 0:
+
+#### Preamble ####
+# Purpose: Cleans the raw delay data into an analysis dataset
+# Author: Andrew Goh
+# Date: 19 September 2024
+# Contact: andrew.goh@utoronto.ca
+# License: MIT
+# Pre-requisites: Need to have downloaded the data
+# Any other information needed? None.
+
+library(here)
+library(lubridate)
+library(dplyr)
+# Read the raw data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time) # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+
+subwayData <- subwayData %>%
+  select(Time, Date, Min.Delay, Hour) %>%
+  na.omit() # Remove rows with NA values
+
+busData <- busData %>%
+  select(Time, Date, Min.Delay, Hour) %>%
+  na.omit() # Remove rows with NA values
+
+# change Date to Date object in R
+busData <- busData %>%
+  mutate(Date = as.Date(Date))
+
+# do the same as the above line but for subway data
+subwayData <- subwayData %>%
+  mutate(Date = as.Date(Date))
+
+# Create the directory for analysis data if it doesn't exist
+dir.create(here::here("./data/analysis_data"), showWarnings = FALSE)
+
+# Write the cleaned data to new CSV files
+write.csv(subwayData, here::here("./data/analysis_data/analysis_data.csv"), row.names = FALSE)
+write.csv(busData, here::here("./data/analysis_data/analysis_data_bus.csv"), row.names = FALSE)
+ChatGPT said:
+ChatGPT
+To remove rows where Min.Delay is equal to 0 from both the subwayData and busData, you can add a filtering step using filter(Min.Delay != 0) before saving the cleaned data to the CSV files.
+
+Here is the modified script with the necessary adjustments:
+
+r
+Copy code
+#### Preamble ####
+# Purpose: Cleans the raw delay data into an analysis dataset
+# Author: Andrew Goh
+# Date: 19 September 2024
+# Contact: andrew.goh@utoronto.ca
+# License: MIT
+# Pre-requisites: Need to have downloaded the data
+# Any other information needed? None.
+
+library(here)
+library(lubridate)
+library(dplyr)
+
+# Read the raw data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time) # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+
+# Select relevant columns and remove rows with NA values
+subwayData <- subwayData %>%
+  select(Time, Date, Min.Delay, Hour) %>%
+  na.omit() %>%
+  filter(Min.Delay != 0) # Remove rows where Min.Delay is 0
+
+busData <- busData %>%
+  select(Time, Date, Min.Delay, Hour) %>%
+  na.omit() %>%
+  filter(Min.Delay != 0) # Remove rows where Min.Delay is 0
+
+# Convert Date column to Date object
+subwayData <- subwayData %>%
+  mutate(Date = as.Date(Date))
+
+busData <- busData %>%
+  mutate(Date = as.Date(Date))
+
+# Create the directory for analysis data if it doesn't exist
+dir.create(here::here("./data/analysis_data"), showWarnings = FALSE)
+
+# Write the cleaned data to new CSV files
+write.csv(subwayData, here::here("./data/analysis_data/analysis_data.csv"), row.names = FALSE)
+write.csv(busData, here::here("./data/analysis_data/analysis_data_bus.csv"), row.names = FALSE)
+Explanation of the Changes:
+Filtering for Non-Zero Delays: I added the filter(Min.Delay != 0) step for both subwayData and busData right after selecting columns and removing rows with NA values. This ensures that any row with a zero delay is excluded from the dataset.
+Data Saving: The rest of the script remains unchanged, and the cleaned data without zero delays is saved to the CSV files.
+This will ensure that only rows with non-zero delays are included in your cleaned analysis datasets.

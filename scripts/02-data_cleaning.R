@@ -10,6 +10,7 @@
 library(here)
 library(lubridate)
 library(dplyr)
+
 # Read the raw data
 subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
 busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
@@ -22,20 +23,22 @@ busData$Time <- hm(busData$Time)
 subwayData$Hour <- hour(subwayData$Time)
 busData$Hour <- hour(busData$Time)
 
+# Select relevant columns and remove rows with NA values
 subwayData <- subwayData %>%
   select(Time, Date, Min.Delay, Hour) %>%
-  na.omit() # Remove rows with NA values
+  na.omit() %>%
+  filter(Min.Delay != 0) # Remove rows where Min.Delay is 0
 
 busData <- busData %>%
   select(Time, Date, Min.Delay, Hour) %>%
-  na.omit() # Remove rows with NA values
+  na.omit() %>%
+  filter(Min.Delay != 0) # Remove rows where Min.Delay is 0
 
-# change Date to Date object in R
-busData <- busData %>%
+# Convert Date column to Date object
+subwayData <- subwayData %>%
   mutate(Date = as.Date(Date))
 
-# do the same as the above line but for subway data
-subwayData <- subwayData %>%
+busData <- busData %>%
   mutate(Date = as.Date(Date))
 
 # Create the directory for analysis data if it doesn't exist
