@@ -266,7 +266,7 @@ A key question that remains, however, is how individuals can best use this data 
 
 To better estimate the average delay amount given that a delay happens, we look at average ridership data from @metrolinx_rtp and @average_distance, stating that "local" trips take around 4.2km on average. Average distance between stations, calculated using data from the @ttc_conventional_system_2023, is 70 stations / 70.1km for approximately 1km per station (on average) and a resulting average of around 4 stations per trip. 
 
-Accounting for the previously mentioned carry-over delay for the specific subway arriving at each of the 4 stations, we conclude that for the average trip during peak hour, leaving 10-15 minutes early is a fairly safe margin to ensure punctual arrival even in the case of delays, doubling this value to account for extra stations (20-30 minutes extra for an 8-station trip, for example).
+Accounting for the previously mentioned carry-over delay for the specific subway arriving at each of the 4 stations, we conclude that for the average trip during peak hour, leaving 10-15 minutes early is a fairly safe margin to ensure punctual arrival even in the case of delays, scaling this value as fit to account for extra/fewer stations (leave a 20-30 minutes margin for an 8-station trip, for example).
 
 # Limitations and further research
 
