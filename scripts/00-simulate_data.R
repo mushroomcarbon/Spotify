@@ -1,8 +1,8 @@
 #### Preamble ####
 # Purpose: Simulates data
-# Author: Rohan Alexander
+# Author: Andrew Goh
 # Date: 19 September 2024
-# Contact: rohan.alexander@utoronto.ca
+# Contact: andrew.goh@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: None
 # Any other information needed? None
@@ -13,28 +13,20 @@ library(tidyverse)
 
 
 #### Simulate data ####
-set.seed(304)
+set.seed(6737151)
 
-# Define the start and end date
-start_date <- as.Date("2018-01-01")
-end_date <- as.Date("2023-12-31")
+n <- 100
+# simulate 100 dates
+dates <- seq.Date(from = as.Date("2022-01-01"), by = "day", length.out = n)
+# same for times
+times <- format(
+  as.POSIXct("2022-01-01 00:00:00") + runif(n, min = 0, max = 24 * 3600),
+  format = "%H:%M:%S"
+)
+# delay in minutes
+min_delay <- abs(round(rnorm(n, 15, 5), 0))
+# combine
+simulated_data <- data.frame(Date = dates, Time = times, Min.Delay = min_delay)
 
-# Set the number of random dates you want to generate
-number_of_dates <- 100
-
-data <-
-  tibble(
-    dates = as.Date(
-      runif(
-        n = number_of_dates,
-        min = as.numeric(start_date),
-        max = as.numeric(end_date)
-      ),
-      origin = "1970-01-01"
-    ),
-    number_of_marriage = rpois(n = number_of_dates, lambda = 15)
-  )
-
-
-#### Write_csv
-write_csv(data, file = "data/raw_data/simulated.csv")
+# write to file
+write_csv(simulated_data, file = "data/raw_data/simulated.csv")
