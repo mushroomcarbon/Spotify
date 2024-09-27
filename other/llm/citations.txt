@@ -1,0 +1,788 @@
+give me @cites for all of the references here each on its own line:
+
+@Manual{opendatatoronto,
+    title = {opendatatoronto: Access the City of Toronto Open Data Portal},
+    author = {Sharla Gelfand},
+    year = {2022},
+    note = {R package version 0.1.5},
+    url = {https://CRAN.R-project.org/package=opendatatoronto},
+  }
+
+@Manual{talia,
+    title = {R: A Language and Environment for Statistical Computing},
+    author = {{R Core Team}},
+    organization = {R Foundation for Statistical Computing},
+    address = {Vienna, Austria},
+    year = {2023},
+    url = {https://www.R-project.org/},
+  }
+  
+  
+@Article{thereferencecanbewhatever,
+    title = {Welcome to the {tidyverse}},
+    author = {Hadley Wickham and Mara Averick and Jennifer Bryan and Winston Chang and Lucy D'Agostino McGowan and Romain François and Garrett Grolemund and Alex Hayes and Lionel Henry and Jim Hester and Max Kuhn and Thomas Lin Pedersen and Evan Miller and Stephan Milton Bache and Kirill Müller and Jeroen Ooms and David Robinson and Dana Paige Seidel and Vitalie Spinu and Kohske Takahashi and Davis Vaughan and Claus Wilke and Kara Woo and Hiroaki Yutani},
+    year = {2019},
+    journal = {Journal of Open Source Software},
+    volume = {4},
+    number = {43},
+    pages = {1686},
+    doi = {10.21105/joss.01686},
+  }  
+  
+@Manual{ttc_line_1_schedule,
+    title = {Subway Line 1 (Yonge-University) Schedule},
+    author = {{Toronto Transit Commission}},
+    year = {2024},
+    note = {Accessed: 2024-09-23},
+    url = {https://www.ttc.ca/routes-and-schedules/1/0/15664},
+}
+  
+@Manual{ttc_know_your_ttc,
+    title = {Know Your TTC},
+    author = {{Toronto Transit Commission}},
+    year = {2024},
+    note = {Accessed: 2024-09-23},
+    url = {https://www.ttc.ca/riding-the-ttc/know-your-ttc},
+}
+
+@Manual{ttc_conventional_system_2023,
+    title = {2023 Operating Statistics - Conventional System},
+    author = {{Toronto Transit Commission}},
+    year = {2024},
+    note = {Accessed: 2024-09-23},
+    url = {https://www.ttc.ca/transparency-and-accountability/Operating-Statistics/Operating-Statistics---2023/Conventional-System},
+}
+
+@Manual{metrolinx_rtp,
+    title = {The 2041 Regional Transportation Plan},
+    organization = {Metrolinx},
+    year = {2024},
+    note = {Accessed: 2024-09-23},
+    url = {https://www.metrolinx.com/en/projects-and-programs/regional-transportation-plan}
+}
+
+@Manual{average_distance,
+    title = {What Would Fare by Distance Mean for Toronto?},
+    organization = {Steve Munro},
+    year = {2024},
+    note = {Accessed: 2024-09-23},
+    url = {https://stevemunro.ca/2016/02/14/what-would-fare-by-distance-mean-for-toronto/}
+}
+  
+@Manual{citeLahman,
+    title = {Lahman: Sean Lahman' Baseball Database},
+    author = {Michael Friendly and Chris Dalzell and Martin Monkman and Dennis Murphy},
+    year = {2020},
+    note = {R package version 8.0-0},
+    url = {https://CRAN.R-project.org/package=Lahman},
+  }  
+  
+  
+@article{gebru2021datasheets,
+  title={Datasheets for datasets},
+  author={Gebru, Timnit and Morgenstern, Jamie and Vecchione, Briana and Vaughan, Jennifer Wortman and Wallach, Hanna and Iii, Hal Daum{\'e} and Crawford, Kate},
+  journal={Communications of the ACM},
+  volume={64},
+  number={12},
+  pages={86--92},
+  year={2021},
+  publisher={ACM New York, NY, USA}
+}
+
+@Misc{rstanarm,
+    title = {rstanarm: {Bayesian} applied regression modeling via {Stan}},
+    author = {Ben Goodrich and Jonah Gabry and Imad Ali and Sam Brilleman},
+    note = {R package version 2.21.3},
+    year = {2022},
+    url = {https://mc-stan.org/rstanarm/},
+  }
+  
+@Manual{palmerpenguins,
+    title = {palmerpenguins: Palmer Archipelago (Antarctica) penguin data},
+    author = {Allison Marie Horst and Alison Presmanes Hill and Kristen B Gorman},
+    year = {2020},
+    note = {R package version 0.1.0},
+    doi = {10.5281/zenodo.3960218},
+    url = {https://allisonhorst.github.io/palmerpenguins/},
+  }
+  
+  
+@Article{rohan,
+    title = {Welcome to the {tidyverse}},
+    author = {Hadley Wickham and Mara Averick and Jennifer Bryan and Winston Chang and Lucy D'Agostino McGowan and Romain François and Garrett Grolemund and Alex Hayes and Lionel Henry and Jim Hester and Max Kuhn and Thomas Lin Pedersen and Evan Miller and Stephan Milton Bache and Kirill Müller and Jeroen Ooms and David Robinson and Dana Paige Seidel and Vitalie Spinu and Kohske Takahashi and Davis Vaughan and Claus Wilke and Kara Woo and Hiroaki Yutani},
+    year = {2019},
+    journal = {Journal of Open Source Software},
+    volume = {4},
+    number = {43},
+    pages = {1686},
+    doi = {10.21105/joss.01686},
+  }  
+  
+  
+
+ChatGPT said:
+ChatGPT
+Here are the citations formatted as requested:
+
+less
+Copy code
+@Manual{opendatatoronto,
+    title = {opendatatoronto: Access the City of Toronto Open Data Portal},
+    author = {Sharla Gelfand},
+    year = {2022},
+    note = {R package version 0.1.5},
+    url = {https://CRAN.R-project.org/package=opendatatoronto},
+}
+
+@Manual{talia,
+    title = {R: A Language and Environment for Statistical Computing},
+    author = {{R Core Team}},
+    organization = {R Foundation for Statistical Computing},
+    address = {Vienna, Austria},
+    year = {2023},
+    url = {https://www.R-project.org/},
+}
+
+@Article{thereferencecanbewhatever,
+    title = {Welcome to the {tidyverse}},
+    author = {Hadley Wickham and Mara Averick and Jennifer Bryan and Winston Chang and Lucy D'Agostino McGowan and Romain François and Garrett Grolemund and Alex Hayes and Lionel Henry and Jim Hester and Max Kuhn and Thomas Lin Pedersen and Evan Miller and Stephan Milton Bache and Kirill Müller and Jeroen Ooms and David Robinson and Dana Paige Seidel and Vitalie Spinu and Kohske Takahashi and Davis Vaughan and Claus Wilke and Kara Woo and Hiroaki Yutani},
+    year = {2019},
+    journal = {Journal of Open Source Software},
+    volume = {4},
+    number = {43},
+    pages = {1686},
+    doi = {10.21105/joss.01686},
+}
+
+@Manual{ttc_line_1_schedule,
+    title = {Subway Line 1 (Yonge-University) Schedule},
+    author = {{Toronto Transit Commission}},
+    year = {2024},
+    note = {Accessed: 2024-09-23},
+    url = {https://
+
+
+
+
+
+You said:
+no, i just need @talia for examplke
+ChatGPT said:
+ChatGPT
+Got it! Here are the citations you requested, each on its own line:
+
+scss
+Copy code
+@Manual{opendatatoronto}
+@Manual{talia}
+@Article{thereferencecanbewhatever}
+@Manual{ttc_line_1_schedule}
+@Manual{ttc_know_your_ttc}
+@Manual{ttc_conventional_system_2023}
+@Manual{metrolinx_rtp}
+@Manual{average_distance}
+@Manual{citeLahman}
+@article{gebru2021datasheets}
+@Misc{rstanarm}
+@Manual{palmerpenguins}
+@Article{rohan}
+
+
+
+
+
+You said:
+no need for the manual words
+ChatGPT said:
+ChatGPT
+Got it! Here are the citations without the "Manual" or "Article" labels:
+
+less
+Copy code
+@opendatatoronto
+@talia
+@thereferencecanbewhatever
+@ttc_line_1_schedule
+@ttc_know_your_ttc
+@ttc_conventional_system_2023
+@metrolinx_rtp
+@average_distance
+@citeLahman
+@gebru2021datasheets
+@rstanarm
+@palmerpenguins
+@rohan
+
+
+
+
+
+You said:
+how do i cite stuff in quarto with a references.bib file without having an in-text rewference?
+ChatGPT said:
+ChatGPT
+To cite references in Quarto using a references.bib file without displaying in-text citations, you can use the bibliography option and set csl to null. Here’s how you can do it:
+
+Create your references.bib file with all the citations you want to include.
+
+Set up your Quarto document with the following YAML header:
+
+yaml
+Copy code
+---
+title: "Your Document Title"
+author: "Your Name"
+output: html_document
+bibliography: references.bib
+csl: null
+---
+Add your references section at the end of your document by including the following code:
+
+markdown
+Copy code
+# References
+Compile your document, and the references will be included at the end without in-text citations.
+
+By using csl: null, you prevent in-text citations from being rendered while still allowing the references to be displayed at the end.
+
+
+
+
+
+
+You said:
+how can include all citations in my bibliography.bib in the references section??
+ChatGPT said:
+ChatGPT
+To include all citations from your references.bib file in the references section of your Quarto document, you can use the nocite feature. Here’s how to do it:
+
+Ensure your references.bib file is properly formatted and contains all the entries you want to include.
+
+Set up your Quarto document with the following YAML header:
+
+yaml
+Copy code
+---
+title: "Your Document Title"
+author: "Your Name"
+output: html_document
+bibliography: references.bib
+csl: null
+---
+In your document body, use the following code to include all references:
+
+markdown
+Copy code
+# References
+\nocite{*}
+Compile your document. The \nocite{*} command will include all entries from your references.bib file in the references section, even if they are not cited in the text.
+
+With this setup, you will have a complete bibliography at the end of your document containing all references from your .bib file.
+
+
+
+
+
+
+You said:
+what does csl null do?
+ChatGPT said:
+ChatGPT
+Setting csl: null in your Quarto document's YAML header prevents the use of a Citation Style Language (CSL) file for formatting citations. This means:
+
+No In-Text Citations: It disables in-text citations, so any references you include using \cite{} or similar commands will not appear in the text.
+
+Simple Reference List: The references will still be compiled and listed at the end of your document based on the entries in your bibliography file, but they won't be formatted according to a specific citation style (like APA, MLA, etc.).
+
+Using csl: null is useful when you want to include a bibliography without cluttering your text with citations.
+
+
+
+
+
+
+You said:
+i want intext but i also want to cite everything regasrdless
+ChatGPT said:
+ChatGPT
+To include in-text citations while also listing all entries from your references.bib file in the references section, follow these steps:
+
+YAML Header: Set up your Quarto document with the appropriate bibliography settings. You don’t need to set csl: null if you want a specific citation style.
+
+yaml
+Copy code
+---
+title: "Your Document Title"
+author: "Your Name"
+output: html_document
+bibliography: references.bib
+csl: path/to/your/style.csl  # Optional: specify a CSL file for formatting
+---
+In-Text Citations: Use \cite{key} or @key (replace key with the actual citation key from your references.bib) to include in-text citations throughout your document.
+
+Include All References: At the end of your document, add the following:
+
+markdown
+Copy code
+# References
+\nocite{*}
+Compile your Document: This will generate in-text citations where you've cited entries, and it will also include all entries from your references.bib file in the references section, thanks to the \nocite{*} command.
+
+With this setup, you achieve both in-text citations and a complete bibliography at the end.
+
+
+
+
+
+
+You said:
+nocite odesn't work
+ChatGPT said:
+ChatGPT
+If \nocite{*} isn’t working as expected in your Quarto document, you can use a different approach to ensure all entries in your references.bib file are included in the references section. Here’s how to do it:
+
+YAML Header: Keep your YAML setup as before:
+
+yaml
+Copy code
+---
+title: "Your Document Title"
+author: "Your Name"
+output: html_document
+bibliography: references.bib
+csl: path/to/your/style.csl  # Optional: specify a CSL file for formatting
+---
+In-Text Citations: Use standard citation commands in your text (e.g., @key).
+
+Include All References: At the end of your document, instead of \nocite{*}, you can manually include the references section:
+
+markdown
+Copy code
+# References
+```{r, echo=FALSE}
+bibliograph = c("key1", "key2", "key3")  # Replace with actual keys from your .bib file
+for (key in bibliograph) {
+    cat(sprintf("@%s\n", key))
+}
+Alternatively, you could list all keys manually like this:
+
+markdown
+Copy code
+# References
+@key1
+@key2
+@key3
+Compile Your Document: This will ensure that all specified entries are included in the references section.
+
+This method allows you to display all references explicitly in the bibliography while still allowing in-text citations. If you prefer an automated way to include all references without manually typing them, ensure your references.bib file is correct and recognized by Quarto, and try using the standard commands without \nocite. If issues persist, consider checking Quarto documentation for any updates or changes in handling bibliographies.
+
+
+
+
+
+
+You said:
+do this for my list of citations
+
+@opendatatoronto
+@talia
+@thereferencecanbewhatever
+@ttc_line_1_schedule
+@ttc_know_your_ttc
+@ttc_conventional_system_2023
+@metrolinx_rtp
+@average_distance
+@citeLahman
+@gebru2021datasheets
+@rstanarm
+@palmerpenguins
+ChatGPT said:
+ChatGPT
+To include all your citations in the references section of your Quarto document while allowing for in-text citations, you can list them explicitly in your document like this:
+
+markdown
+Copy code
+# References
+
+@opendatatoronto  
+@talia  
+@thereferencecanbewhatever  
+@ttc_line_1_schedule  
+@ttc_know_your_ttc  
+@ttc_conventional_system_2023  
+@metrolinx_rtp  
+@average_distance  
+@citeLahman  
+@gebru2021datasheets  
+@rstanarm  
+@palmerpenguins  
+Make sure to include this section at the end of your document. This way, all citations will appear in the references section while still allowing you to use in-text citations where needed.
+
+If you want to ensure that all entries from your references.bib file are displayed without having to manually write each one, you might want to check for any issues in your Quarto configuration or look into using the csl style you prefer for automatic formatting.
+
+
+
+
+
+
+You said:
+but doesn't this show the intext citation too?
+ChatGPT said:
+ChatGPT
+You're right; listing the citations directly like that would also display them in the text. If you want to include all references in the bibliography without showing them as in-text citations, you can follow these steps:
+
+YAML Header: Keep the YAML header set up like this:
+
+yaml
+Copy code
+---
+title: "Your Document Title"
+author: "Your Name"
+output: html_document
+bibliography: references.bib
+csl: path/to/your/style.csl  # Optional: specify a CSL file for formatting
+---
+In-Text Citations: Use in-text citations as needed (e.g., @opendatatoronto, @talia, etc.).
+
+Include All References: At the end of your document, add a references section using the following command:
+
+markdown
+Copy code
+# References
+```{r, echo=FALSE}
+# This code chunk includes all entries from your bibliography
+bibliography <- c("opendatatoronto", "talia", "thereferencecanbewhatever", 
+                  "ttc_line_1_schedule", "ttc_know_your_ttc", 
+                  "ttc_conventional_system_2023", "metrolinx_rtp", 
+                  "average_distance", "citeLahman", 
+                  "gebru2021datasheets", "rstanarm", 
+                  "palmerpenguins")
+for (key in bibliography) {
+    cat(sprintf("@%s\n", key))
+}
+Compile Your Document: This way, the references will be included in the references section without displaying them in the text as citations.
+
+If you have a properly configured references.bib file and have defined your bibliography, Quarto should automatically recognize it, and all entries will appear in the references section without cluttering your text with in-text citations.
+
+
+
+
+
+
+You said:
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+
+instead of cleaning the data in an r environment variable, make new data files as .data/analysis_data/analysis_data.csv and analysis_data_bus.csv.
+ChatGPT said:
+ChatGPT
+To create new cleaned data files instead of modifying the data in memory, you can follow these steps in your R script. This will read the original data, process it, and then write the cleaned data to new CSV files in the specified directory. Here’s how you can do it:
+
+r
+Copy code
+library(here)
+library(lubridate)
+
+# Read the raw data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+
+# Create the directory for analysis data if it doesn't exist
+dir.create(here::here("./data/analysis_data"), showWarnings = FALSE)
+
+# Write the cleaned data to new CSV files
+write.csv(subwayData, here::here("./data/analysis_data/analysis_data.csv"), row.names = FALSE)
+write.csv(busData, here::here("./data/analysis_data/analysis_data_bus.csv"), row.names = FALSE)
+Explanation:
+Reading the Data: The script reads the raw subway and bus data from the specified paths.
+Processing the Data: It converts the Time column to a time format and extracts the hour.
+Creating Output Directory: It checks if the ./data/analysis_data directory exists and creates it if not.
+Writing Cleaned Data: Finally, it writes the processed data to new CSV files named analysis_data.csv and analysis_data_bus.csv in the ./data/analysis_data directory.
+Run this script in your R environment to generate the cleaned data files.
+
+
+
+
+
+
+You said:
+now change this to read from the cleaned data csv directly
+
+{r}
+#| label: fig-times-mean
+#| fig-cap: Subway delays w.r.t. time of day
+#| echo: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+
+# Aggregate data by hour to calculate total and mean delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE), 
+            Mean_Delay_Subway = mean(Min.Delay, na.rm = TRUE))
+
+hourly_delays_bus <- busData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Bus = sum(Min.Delay, na.rm = TRUE), 
+            Mean_Delay_Bus = mean(Min.Delay, na.rm = TRUE))
+
+# Combine subway and bus data for comparison
+hourly_delays_combined <- hourly_delays_subway %>%
+  full_join(hourly_delays_bus, by = "Hour")
+
+# Reshape data for average delays
+hourly_avg_combined_long <- hourly_delays_combined %>%
+  pivot_longer(cols = starts_with("Mean"), 
+               names_to = "Type", 
+               values_to = "Mean_Delay") %>%
+  mutate(Type = recode(Type, 
+                       "Mean_Delay_Subway" = "Subway", 
+                       "Mean_Delay_Bus" = "Bus"))
+
+# Plot 1: Average delays by hour of day (combined subway and bus)
+ggplot(hourly_avg_combined_long, aes(x = factor(Hour), y = Mean_Delay, fill = Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Average Delays by Hour of Day (Subway vs Bus)", 
+       x = "Hour of Day", 
+       y = "Average Delay (Minutes)", 
+       fill = "Type") +
+  scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
+  theme_minimal() +
+  theme(legend.position = "top", 
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+ChatGPT said:
+ChatGPT
+To modify your code so that it reads from the cleaned data CSV files instead of the raw data, simply change the paths in the read.csv functions to point to the cleaned data files. Here’s the updated code:
+
+r
+Copy code
+```{r}
+#| label: fig-times-mean
+#| fig-cap: Subway delays w.r.t. time of day
+#| echo: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the cleaned data
+subwayData <- read.csv(here::here("./data/analysis_data/analysis_data.csv"))
+busData <- read.csv(here::here("./data/analysis_data/analysis_data_bus.csv"))
+
+# Aggregate data by hour to calculate total and mean delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE), 
+            Mean_Delay_Subway = mean(Min.Delay, na.rm = TRUE))
+
+hourly_delays_bus <- busData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Bus = sum(Min.Delay, na.rm = TRUE), 
+            Mean_Delay_Bus = mean(Min.Delay, na.rm = TRUE))
+
+# Combine subway and bus data for comparison
+hourly_delays_combined <- hourly_delays_subway %>%
+  full_join(hourly_delays_bus, by = "Hour")
+
+# Reshape data for average delays
+hourly_avg_combined_long <- hourly_delays_combined %>%
+  pivot_longer(cols = starts_with("Mean"), 
+               names_to = "Type", 
+               values_to = "Mean_Delay") %>%
+  mutate(Type = recode(Type, 
+                       "Mean_Delay_Subway" = "Subway", 
+                       "Mean_Delay_Bus" = "Bus"))
+
+# Plot 1: Average delays by hour of day (combined subway and bus)
+ggplot(hourly_avg_combined_long, aes(x = factor(Hour), y = Mean_Delay, fill = Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Average Delays by Hour of Day (Subway vs Bus)", 
+       x = "Hour of Day", 
+       y = "Average Delay (Minutes)", 
+       fill = "Type") +
+  scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
+  theme_minimal() +
+  theme(legend.position = "top", 
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+Key Changes:
+The paths in the read.csv functions have been updated to read from the cleaned data files in the ./data/analysis_data/ directory.
+The rest of the code remains the same, as it processes and visualizes the data in the same way.
+This ensures that your analysis uses the cleaned data directly.
+
+
+
+
+
+
+You said:
+this too
+
+{r}
+#| label: fig-times-total
+#| fig-cap: total delay times
+#| echo: false
+
+# Reshape data for total delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE))
+
+ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Total Subway Delays by Hour of Day", 
+       x = "Hour of Day", 
+       y = "Total Delay (Minutes)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+ChatGPT said:
+ChatGPT
+Here’s how to modify the second code chunk to read from the cleaned data CSV files:
+
+r
+Copy code
+```{r}
+#| label: fig-times-total
+#| fig-cap: total delay times
+#| echo: false
+
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the cleaned data
+subwayData <- read.csv(here::here("./data/analysis_data/analysis_data.csv"))
+busData <- read.csv(here::here("./data/analysis_data/analysis_data_bus.csv"))
+
+# Reshape data for total delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE))
+
+ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Total Subway Delays by Hour of Day", 
+       x = "Hour of Day", 
+       y = "Total Delay (Minutes)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+Key Changes:
+The read.csv functions have been updated to read from the cleaned data files in the ./data/analysis_data/ directory.
+The rest of the code processes the total delays for the subway and creates the bar plot as before.
+This ensures that this chunk of code also uses the cleaned data directly.
+
+
+
+
+
+
+You said:
+now this:
+
+{r}
+#| label: fig-times-adjusted
+#| fig-cap: Delay time adjusted for the approximate subway load
+#| echo: false
+adjust_subway_delays <- function(data) {
+  data %>%
+    mutate(Adjusted_Delay = ifelse(Hour %in% 6:9 | Hour %in% 15:19, Min.Delay / 2, Min.Delay))
+}
+
+# Apply the adjustment to subway data
+subwayData <- adjust_subway_delays(subwayData)
+
+# Aggregate the adjusted data by hour for total delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Adjusted_Delay, na.rm = TRUE))
+
+# Plot: Adjusted total subway delays by hour of day
+ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Total Subway Delays by Hour of Day Adjusted for Capacity", 
+       x = "Hour of Day", 
+       y = "Delay (Minutes)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+ChatGPT said:
+ChatGPT
+Here’s the modified code chunk that reads from the cleaned data CSV files and applies the adjustments to the subway delays:
+
+r
+Copy code
+```{r}
+#| label: fig-times-adjusted
+#| fig-cap: Delay time adjusted for the approximate subway load
+#| echo: false
+
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the cleaned data
+subwayData <- read.csv(here::here("./data/analysis_data/analysis_data.csv"))
+busData <- read.csv(here::here("./data/analysis_data/analysis_data_bus.csv"))
+
+# Function to adjust subway delays
+adjust_subway_delays <- function(data) {
+  data %>%
+    mutate(Adjusted_Delay = ifelse(Hour %in% 6:9 | Hour %in% 15:19, Min.Delay / 2, Min.Delay))
+}
+
+# Apply the adjustment to subway data
+subwayData <- adjust_subway_delays(subwayData)
+
+# Aggregate the adjusted data by hour for total delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Adjusted_Delay, na.rm = TRUE))
+
+# Plot: Adjusted total subway delays by hour of day
+ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Total Subway Delays by Hour of Day Adjusted for Capacity", 
+       x = "Hour of Day", 
+       y = "Delay (Minutes)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+Key Changes:
+The read.csv functions have been updated to load the cleaned data from ./data/analysis_data/analysis_data.csv.
+The rest of the code applies the delay adjustment function and creates the plot as before.
+This ensures that this code chunk also uses the cleaned data directly.

@@ -1,0 +1,146 @@
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+
+# Create the directory for analysis data if it doesn't exist
+dir.create(here::here("./data/analysis_data"), showWarnings = FALSE)
+
+# Write the cleaned data to new CSV files
+write.csv(subwayData, here::here("./data/analysis_data/analysis_data.csv"), row.names = FALSE)
+write.csv(busData, here::here("./data/analysis_data/analysis_data_bus.csv"), row.names = FALSE)
+
+how do i make this only keep the rows Time, Date, Min.Delay, Hour? also remove na values
+ChatGPT said:
+ChatGPT
+To keep only the specified columns (Time, Date, Min.Delay, and Hour) in your subwayData and busData dataframes and remove any NA values, you can use the select() function from the dplyr package and the na.omit() function or filter() function. Here’s how you can modify your code accordingly:
+
+Updated Code
+r
+Copy code
+# Load necessary libraries
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Read the data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+
+# Select only the desired columns and remove rows with NA values
+subwayData <- subwayData %>%
+  select(Time, Date, Min.Delay, Hour) %>%
+  na.omit()  # Remove rows with NA values
+
+busData <- busData %>%
+  select(Time, Date, Min.Delay, Hour) %>%
+  na.omit()  # Remove rows with NA values
+
+# Create the directory for analysis data if it doesn't exist
+dir.create(here::here("./data/analysis_data"), showWarnings = FALSE)
+
+# Write the cleaned data to new CSV files
+write.csv(subwayData, here::here("./data/analysis_data/analysis_data.csv"), row.names = FALSE)
+write.csv(busData, here::here("./data/analysis_data/analysis_data_bus.csv"), row.names = FALSE)
+Key Changes Explained
+Selecting Specific Columns:
+
+The select() function is used to keep only the columns you want in both subwayData and busData.
+r
+Copy code
+subwayData <- subwayData %>% select(Time, Date, Min.Delay, Hour)
+Removing NA Values:
+
+The na.omit() function is applied to remove any rows that contain NA values in the selected dataframes.
+r
+Copy code
+subwayData <- subwayData %>% na.omit()
+Alternative Using filter() to Remove NAs
+If you prefer using filter() to remove NA values, you can do so like this:
+
+r
+Copy code
+subwayData <- subwayData %>%
+  select(Time, Date, Min.Delay, Hour) %>%
+  filter(!is.na(Time) & !is.na(Date) & !is.na(Min.Delay) & !is.na(Hour))
+
+busData <- busData %>%
+  select(Time, Date, Min.Delay, Hour) %>%
+  filter(!is.na(Time) & !is.na(Date) & !is.na(Min.Delay) & !is.na(Hour))
+Summary
+With these changes, your code now filters the data to only keep the specified columns and removes any rows containing NA values before saving the cleaned data to new CSV files. Let me know if you have any other questions or need further modifications!
+
+
+
+
+
+
+You said:
+if theres a table called Min Delay instead, how do i write this?
+ChatGPT said:
+ChatGPT
+If you have a table called Min Delay instead of Min.Delay, you'll need to adjust your select() and filtering operations to account for the space in the column name. In R, you can use backticks (`) to reference column names that contain spaces.
+
+Here’s how to modify your code accordingly:
+
+Updated Code with Table Named Min Delay
+r
+Copy code
+# Load necessary libraries
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Read the data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+
+# Select only the desired columns and remove rows with NA values
+subwayData <- subwayData %>%
+  select(Time, Date, `Min Delay`, Hour) %>%  # Use backticks for 'Min Delay'
+  na.omit()  # Remove rows with NA values
+
+busData <- busData %>%
+  select(Time, Date, `Min Delay`, Hour) %>%  # Use backticks for 'Min Delay'
+  na.omit()  # Remove rows with NA values
+
+# Create the directory for analysis data if it doesn't exist
+dir.create(here::here("./data/analysis_data"), showWarnings = FALSE)
+
+# Write the cleaned data to new CSV files
+write.csv(subwayData, here::here("./data/analysis_data/analysis_data.csv"), row.names = FALSE)
+write.csv(busData, here::here("./data/analysis_data/analysis_data_bus.csv"), row.names = FALSE)
+Key Changes Explained
+Selecting Columns with Spaces:
+
+Use backticks () around Min Delay` when selecting it to indicate that it is a single column name containing a space:
+r
+Copy code
+select(Time, Date, `Min Delay`, Hour)
+NA Removal:
+
+The na.omit() function remains unchanged, as it will work with the modified column name.
+Summary
+This code will successfully select the Time, Date, Min Delay, and Hour columns from your dataframes and remove any rows containing NA values, even with the space in the Min Delay column name. Let me know if you have any more questions or need further adjustments!

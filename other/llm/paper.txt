@@ -1,0 +1,862 @@
+Date,Time,Day,Station,Code,Min Delay,Min Gap,Bound,Line,Vehicle
+2023-01-01T00:00:00Z,02:22,Sunday,MUSEUM STATION,MUPAA,3,9,S,YU,5931
+2023-01-01T00:00:00Z,02:30,Sunday,KIPLING STATION,MUIS,0,0,E,BD,5341
+2023-01-01T00:00:00Z,02:33,Sunday,WARDEN STATION,SUO,0,0,W,BD,0
+2023-01-01T00:00:00Z,03:17,Sunday,KEELE STATION,MUIS,0,0,NA,BD,0
+2023-01-01T00:00:00Z,07:16,Sunday,BATHURST STATION,MUIS,0,0,NA,BD,0
+2023-01-01T00:00:00Z,07:44,Sunday,JANE STATION,MUNCA,0,0,NA,BD,0
+2023-01-01T00:00:00Z,07:50,Sunday,WOODBINE STATION,MUNCA,0,0,NA,BD,0
+2023-01-01T00:00:00Z,08:02,Sunday,VAUGHAN MC STATION,TUNOA,6,12,S,YU,5451
+
+for a dataset like this, named data.csv, R studio code for graphing delay times w.r.t. time of day
+ChatGPT said:
+ChatGPT
+Here’s how you can create a graph of delay times with respect to the time of day using R:
+
+First, make sure your data.csv is loaded correctly.
+Convert the Time column to a proper time format.
+Create a plot to visualize the Min Delay (delay times) with respect to the time of day.
+Here’s the R code to do that:
+
+r
+Copy code
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(lubridate)  # for working with date and time
+
+# Load the data
+data <- read.csv("data.csv")
+
+# Convert the Time column to a proper time format
+data$Time <- hms(data$Time)  # Parse 'Time' as hours, minutes, seconds
+
+# Create a plot of Min Delay vs. Time of Day
+ggplot(data, aes(x = Time, y = Min.Delay)) +
+  geom_line(color = "blue") +  # Draws a line graph
+  geom_point(color = "red") +   # Adds points on the line
+  labs(title = "Delay Times vs. Time of Day",
+       x = "Time of Day",
+       y = "Minimum Delay (Minutes)") +
+  theme_minimal()
+Make sure that the lubridate and ggplot2 packages are installed (install.packages("lubridate") and install.packages("ggplot2") if not).
+
+This code reads the CSV file, processes the Time column to represent the time of day properly, and plots the minimum delay times against the time of day. The graph will help visualize how delays change throughout the day.
+
+
+
+
+
+
+You said:
+i want scatter plot
+ChatGPT said:
+ChatGPT
+Here's the updated R code for creating a scatter plot of delay times with respect to the time of day:
+
+r
+Copy code
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(lubridate)  # for working with date and time
+
+# Load the data
+data <- read.csv("data.csv")
+
+# Convert the Time column to a proper time format
+data$Time <- hms(data$Time)  # Parse 'Time' as hours, minutes, seconds
+
+# Create a scatter plot of Min Delay vs. Time of Day
+ggplot(data, aes(x = Time, y = Min.Delay)) +
+  geom_point(color = "red", size = 3) +  # Creates scatter plot
+  labs(title = "Delay Times vs. Time of Day",
+       x = "Time of Day",
+       y = "Minimum Delay (Minutes)") +
+  theme_minimal()
+This will give you a scatter plot where each point represents the delay at a specific time of day. The points are red, and the size is slightly increased to make them more visible.
+
+
+
+
+
+
+You said:
+Warning	
+Warning: [38;5;232mRemoved 22949 rows containing missing values or values outside the scale range (geom_point()).[39m
+ChatGPT said:
+ChatGPT
+The warning you're seeing suggests that there are missing or out-of-range values in your dataset, likely in the Min.Delay or Time columns. This may be due to:
+
+Missing values (e.g., empty fields in the CSV).
+Non-numeric or improperly formatted values in the Min.Delay or Time columns.
+Here’s how you can handle and clean the data before plotting:
+
+Updated Code with Data Cleaning
+r
+Copy code
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(lubridate)  # for working with date and time
+
+# Load the data
+data <- read.csv("data.csv")
+
+# Convert the Time column to a proper time format
+data$Time <- hms(data$Time)  # Parse 'Time' as hours, minutes, seconds
+
+# Check and remove rows with missing or invalid values in Min.Delay or Time
+cleaned_data <- data %>%
+  filter(!is.na(Min.Delay) & !is.na(Time)) %>%  # Remove rows with missing values
+  filter(Min.Delay >= 0)                        # Ensure Min.Delay is non-negative
+
+# Create a scatter plot of Min Delay vs. Time of Day
+ggplot(cleaned_data, aes(x = Time, y = Min.Delay)) +
+  geom_point(color = "red", size = 3) +  # Creates scatter plot
+  labs(title = "Delay Times vs. Time of Day",
+       x = "Time of Day",
+       y = "Minimum Delay (Minutes)") +
+  theme_minimal()
+Explanation of Changes:
+Data cleaning step (filter):
+filter(!is.na(Min.Delay) & !is.na(Time)): This removes rows where Min.Delay or Time have missing values (NA).
+filter(Min.Delay >= 0): Ensures that the delays are non-negative, which is a reasonable assumption for delay times.
+After cleaning, the plot should work without removing rows unexpectedly. Let me know if any specific issues persist!
+
+
+
+
+
+
+You said:
+time in data is now all N/A
+ChatGPT said:
+ChatGPT
+The issue may be due to how the Time column is being parsed. The lubridate::hms() function expects time in a specific format like "HH:MM:SS". However, your Time column in the dataset appears to be in the format HH:MM without seconds, which is likely causing the parsing to fail.
+
+To resolve this, you can use the lubridate::parse_date_time() function instead, which is more flexible and can handle different time formats. Here’s how you can modify the code:
+
+Updated Code
+r
+Copy code
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(lubridate)  # for working with date and time
+
+# Load the data
+data <- read.csv("data.csv")
+
+# Convert the Time column to a proper time format (handle HH:MM format)
+data$Time <- parse_date_time(data$Time, orders = "HM")  # Parse 'Time' as hours and minutes
+
+# Check and remove rows with missing or invalid values in Min.Delay or Time
+cleaned_data <- data %>%
+  filter(!is.na(Min.Delay) & !is.na(Time)) %>%  # Remove rows with missing values
+  filter(Min.Delay >= 0)                        # Ensure Min.Delay is non-negative
+
+# Create a scatter plot of Min Delay vs. Time of Day
+ggplot(cleaned_data, aes(x = Time, y = Min.Delay)) +
+  geom_point(color = "red", size = 3) +  # Creates scatter plot
+  labs(title = "Delay Times vs. Time of Day",
+       x = "Time of Day",
+       y = "Minimum Delay (Minutes)") +
+  theme_minimal()
+Explanation:
+parse_date_time() function: This is more flexible and can parse your Time column in the HH:MM format. By specifying "HM" in the orders argument, it correctly interprets the time.
+This should solve the issue of the Time column being parsed as NA. Let me know if this works!
+
+
+
+
+
+
+You said:
+its still na
+ChatGPT said:
+ChatGPT
+Since the Time column still results in NA, it’s possible that the time values in the dataset contain characters or formatting issues (e.g., spaces or other hidden characters) that are causing the parsing to fail. Let’s clean the Time column to ensure it’s in the correct format before parsing.
+
+We’ll first inspect the Time column and clean it by:
+
+Removing any extra spaces or non-printable characters.
+Parsing the time correctly.
+Updated Code with Time Cleaning
+r
+Copy code
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(lubridate)  # for working with date and time
+library(stringr)    # for string manipulation
+
+# Load the data
+data <- read.csv("data.csv")
+
+# Clean the Time column (remove extra spaces and ensure proper format)
+data$Time <- str_trim(data$Time)   # Remove leading/trailing whitespaces
+
+# Check if the Time format is correct
+print(unique(data$Time))  # View unique time values to check if there's any issue
+
+# Convert the Time column to a proper time format (handle HH:MM format)
+data$Time <- parse_date_time(data$Time, orders = "HM")  # Parse 'Time' as hours and minutes
+
+# Check and remove rows with missing or invalid values in Min.Delay or Time
+cleaned_data <- data %>%
+  filter(!is.na(Min.Delay) & !is.na(Time)) %>%  # Remove rows with missing values
+  filter(Min.Delay >= 0)                        # Ensure Min.Delay is non-negative
+
+# Create a scatter plot of Min Delay vs. Time of Day
+ggplot(cleaned_data, aes(x = Time, y = Min.Delay)) +
+  geom_point(color = "red", size = 3) +  # Creates scatter plot
+  labs(title = "Delay Times vs. Time of Day",
+       x = "Time of Day",
+       y = "Minimum Delay (Minutes)") +
+  theme_minimal()
+Key Steps:
+str_trim(): This removes leading and trailing spaces in case the time strings have extra spaces.
+unique(data$Time): Prints the unique time values to check if there are any formatting issues, such as inconsistent or incorrect time representations.
+parse_date_time(data$Time, orders = "HM"): Attempts to parse the cleaned time strings in HH:MM format.
+Debugging:
+If time values still appear as NA, try running print(unique(data$Time)) to inspect the actual time values in the dataset. You might find characters that need additional cleaning (e.g., special characters or formatting errors).
+
+Let me know if the issue persists or if you see anything unusual when printing the time values!
+
+
+
+
+
+
+You said:
+data posixct fdormat = na na na na na
+ChatGPT said:
+ChatGPT
+It seems that despite the attempts to clean and parse the Time column, the time values are still not being converted properly into a valid time format. Let’s break it down and identify a step-by-step way to resolve this:
+
+Steps to Debug:
+Check the actual content of the Time column: We should check for any inconsistencies, characters, or issues in the Time column that may not be immediately visible.
+
+Ensure the Time column is in a standard HH:MM format: If not, we will fix the formatting and then proceed to parse it.
+
+Convert to POSIXct explicitly: If the parse_date_time() approach is failing, we’ll manually split the Time into hours and minutes and convert it into POSIXct.
+
+Debugging Step
+Before proceeding with further transformations, let’s first inspect the Time column to ensure its values are clean and in a consistent format. You can run this in your R code to inspect the unique values in the Time column:
+
+r
+Copy code
+# Inspect the unique values of the Time column
+unique(data$Time)
+Look at the output and see if there are any irregularities (e.g., missing values, unusual characters, or incorrect formats).
+
+Possible Issues and Cleaning
+If the times look clean but are still not converting properly, I suggest trying to convert the Time column manually using as.POSIXct() with a fixed format, assuming all the values follow a HH:MM pattern.
+Updated Code Using as.POSIXct()
+r
+Copy code
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(stringr)    # for string manipulation
+
+# Load the data
+data <- read.csv("data.csv")
+
+# Clean the Time column (remove extra spaces)
+data$Time <- str_trim(data$Time)   # Remove leading/trailing whitespaces
+
+# Inspect the unique values of the Time column
+print(unique(data$Time))
+
+# Convert Time column manually using as.POSIXct
+data$Time <- as.POSIXct(data$Time, format="%H:%M")
+
+# Check and remove rows with missing or invalid values in Min.Delay or Time
+cleaned_data <- data %>%
+  filter(!is.na(Min.Delay) & !is.na(Time)) %>%  # Remove rows with missing values
+  filter(Min.Delay >= 0)                        # Ensure Min.Delay is non-negative
+
+# Create a scatter plot of Min Delay vs. Time of Day
+ggplot(cleaned_data, aes(x = Time, y = Min.Delay)) +
+  geom_point(color = "red", size = 3) +  # Creates scatter plot
+  labs(title = "Delay Times vs. Time of Day",
+       x = "Time of Day",
+       y = "Minimum Delay (Minutes)") +
+  theme_minimal()
+Explanation:
+as.POSIXct(data$Time, format="%H:%M"): Manually converts the Time column assuming the format is HH:MM. If your time data has seconds (HH:MM:SS), adjust it to format="%H:%M:%S".
+This method avoids potential parsing errors with lubridate::parse_date_time().
+What to Look For:
+If the unique times print out normally but parsing still fails, there could be formatting inconsistencies.
+If the time values print out strangely, it may require additional cleaning.
+Let me know if this resolves the issue, or if the printed Time values reveal anything unusual!
+
+
+
+
+
+
+You said:
+{r}
+#| label: fig-times
+#| fig-cap: subway delays w.r.t. time of day
+#| echo:false
+
+library(ggplot2)
+library(dplyr)
+library(lubridate)  # for working with date and time
+
+# Load the data
+data <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+
+# Convert the Time column to a proper time format
+data$Time <- hm(data$Time)  # Parse 'Time' as hours, minutes, seconds
+
+# Create a plot of Min Delay vs. Time of Day
+ggplot(data, aes(x = Time, y = Min.Delay)) +
+  geom_point() # Creates scatter plot
+
+
+i want this to be by the hour and in a bar graph fashion
+ChatGPT said:
+ChatGPT
+To create a bar graph showing subway delays by the hour, you'll need to extract the hour from the Time column and then aggregate the data by hour. After that, you can create a bar plot that shows the total (or average) delay per hour.
+
+Here’s the updated code:
+
+Updated Code for Bar Graph by Hour
+r
+Copy code
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(lubridate)  # for working with date and time
+library(here)       # for loading file paths
+
+# Load the data
+data <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+
+# Convert the Time column to a proper time format
+data$Time <- hm(data$Time)  # Parse 'Time' as hours and minutes
+
+# Extract the hour from the Time column
+data$Hour <- hour(data$Time)
+
+# Aggregate data by hour to calculate total or average delays
+# You can use sum or mean depending on your need (total vs average delay per hour)
+hourly_delays <- data %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay = sum(Min.Delay, na.rm = TRUE))  # Sum of delays by hour
+
+# Create a bar plot of delays by hour
+ggplot(hourly_delays, aes(x = factor(Hour), y = Total_Delay)) +
+  geom_bar(stat = "identity", fill = "steelblue") +  # Bar plot with identity statistic
+  labs(title = "Total Subway Delays by Hour of Day",
+       x = "Hour of Day",
+       y = "Total Delay (Minutes)") +
+  theme_minimal()
+Explanation:
+Extracting the hour: We use hour(data$Time) to extract just the hour part from the time.
+Aggregating by hour: Using group_by(Hour) and summarise(Total_Delay = sum(Min.Delay)), we aggregate the delays for each hour.
+Bar plot: The geom_bar(stat = "identity") creates a bar plot where the height of each bar is determined by the total delay for that hour.
+Modifications:
+If you want average delays instead of total delays, replace sum(Min.Delay) with mean(Min.Delay) in the summarise step.
+The bars represent total delays in minutes for each hour of the day.
+Let me know if this works for your use case or if you need further adjustments!
+
+
+
+
+
+
+You said:
+make this look nicer
+
+{r}
+#| label: fig-times
+#| fig-cap: subway delays w.r.t. time of day
+#| echo: false
+
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(lubridate)  # for working with date and time
+library(here)       # for loading file paths
+
+# Load the data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+# Aggregate data by hour to calculate total or average delays
+# You can use sum or mean depending on your need (total vs average delay per hour)
+hourly_delays <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay = sum(Min.Delay, na.rm = TRUE))  # Sum of delays by hour
+hourly_delays_bus <- busData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Bus = sum(Min.Delay, na.rm = TRUE))  # Sum of delays by hour
+
+# Create a bar plot of delays by hour
+ggplot(hourly_delays, aes(x = factor(Hour), y = Total_Delay)) +
+  geom_bar(stat = "identity", fill = "steelblue") +  # Bar plot with identity statistic
+  labs(title = "Total Subway Delays by Hour of Day",
+       x = "Hour of Day",
+       y = "Total Delay (Minutes)") +
+  theme_minimal()
+
+ggplot(hourly_delays_bus, aes(x = factor(Hour), y = Total_Delay_Bus)) +
+  geom_bar(stat = "identity", fill = "steelblue") +  # Bar plot with identity statistic
+  labs(title = "Total Bus Delays by Hour of Day",
+       x = "Hour of Day",
+       y = "Total Delay (Minutes)") +
+  theme_minimal()
+
+avg_hourly_delays <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay = mean(Min.Delay, na.rm = TRUE))
+
+avg_hourly_delays_bus <- busData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Bus = mean(Min.Delay, na.rm = TRUE))
+
+ggplot(avg_hourly_delays, aes(x = factor(Hour), y = Total_Delay)) +
+  geom_bar(stat = "identity", fill = "steelblue") +  # Bar plot with identity statistic
+  labs(title = "Mean Subway Delays by Hour of Day",
+       x = "Hour of Day",
+       y = "Average Delay (Minutes)") +
+  theme_minimal()
+
+ggplot(avg_hourly_delays_bus, aes(x = factor(Hour), y = Total_Delay_Bus)) +
+  geom_bar(stat = "identity", fill = "steelblue") +  # Bar plot with identity statistic
+  labs(title = "Mean Bus Delays by Hour of Day",
+       x = "Hour of Day",
+       y = "Average Delay (Minutes)") +
+  theme_minimal()
+ChatGPT said:
+ChatGPT
+To improve the aesthetics and clarity of your plots, we can:
+
+Unify styling: Use consistent color schemes and customize themes.
+Enhance labels: Add better titles, axis labels, and captions.
+Avoid repetition: Create one plot for both bus and subway data for comparison.
+Improve readability: Add gridlines and adjust text for better readability.
+Here’s the cleaned-up and improved code:
+
+Improved Code with Enhanced Aesthetics and Combined Plots
+r
+Copy code
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+
+# Aggregate data by hour to calculate total and mean delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE), 
+            Mean_Delay_Subway = mean(Min.Delay, na.rm = TRUE))
+
+hourly_delays_bus <- busData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Bus = sum(Min.Delay, na.rm = TRUE), 
+            Mean_Delay_Bus = mean(Min.Delay, na.rm = TRUE))
+
+# Combine subway and bus data for comparison
+hourly_delays_combined <- hourly_delays_subway %>%
+  full_join(hourly_delays_bus, by = "Hour")
+
+# Reshape data for easier plotting
+hourly_delays_combined_long <- hourly_delays_combined %>%
+  pivot_longer(cols = starts_with("Total"), 
+               names_to = "Type", 
+               values_to = "Total_Delay") %>%
+  mutate(Type = recode(Type, 
+                       "Total_Delay_Subway" = "Subway", 
+                       "Total_Delay_Bus" = "Bus"))
+
+# Plot 1: Total delays by hour of day (combined subway and bus)
+ggplot(hourly_delays_combined_long, aes(x = factor(Hour), y = Total_Delay, fill = Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Total Delays by Hour of Day (Subway vs Bus)", 
+       x = "Hour of Day", 
+       y = "Total Delay (Minutes)", 
+       fill = "Type") +
+  scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
+  theme_minimal() +
+  theme(legend.position = "top", 
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+
+# Reshape data for average delays
+hourly_avg_combined_long <- hourly_delays_combined %>%
+  pivot_longer(cols = starts_with("Mean"), 
+               names_to = "Type", 
+               values_to = "Mean_Delay") %>%
+  mutate(Type = recode(Type, 
+                       "Mean_Delay_Subway" = "Subway", 
+                       "Mean_Delay_Bus" = "Bus"))
+
+# Plot 2: Average delays by hour of day (combined subway and bus)
+ggplot(hourly_avg_combined_long, aes(x = factor(Hour), y = Mean_Delay, fill = Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Average Delays by Hour of Day (Subway vs Bus)", 
+       x = "Hour of Day", 
+       y = "Average Delay (Minutes)", 
+       fill = "Type") +
+  scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
+  theme_minimal() +
+  theme(legend.position = "top", 
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+Key Enhancements:
+Combined plots: Instead of repeating the same graph for subway and bus data, we now have both in one plot for comparison.
+Consistent color palette: Subway and bus are clearly distinguished by different colors (steelblue for subway and tomato for bus).
+Improved titles and labels: Titles are more descriptive, and axis labels are informative. The legend is positioned at the top for better readability.
+Use of position = "dodge": This separates the bars for subway and bus to facilitate comparison in the same hour.
+Minimal theme: The plots use a clean minimal theme with centered titles for a modern look.
+Two Key Plots:
+Total Delays by Hour: Compares the total delays per hour for both subway and bus systems.
+Average Delays by Hour: Compares the average delays per hour for both systems.
+These improvements should make the plots much clearer and more visually appealing. Let me know if you'd like any further tweaks!
+
+
+
+
+
+
+You said:
+in the opposite order (so mean first then total)
+ChatGPT said:
+ChatGPT
+Sure! Here's the updated code with the mean delays plot first, followed by the total delays plot:
+
+Updated Code with Mean Delays First, Total Delays Second
+r
+Copy code
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+
+# Aggregate data by hour to calculate total and mean delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE), 
+            Mean_Delay_Subway = mean(Min.Delay, na.rm = TRUE))
+
+hourly_delays_bus <- busData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Bus = sum(Min.Delay, na.rm = TRUE), 
+            Mean_Delay_Bus = mean(Min.Delay, na.rm = TRUE))
+
+# Combine subway and bus data for comparison
+hourly_delays_combined <- hourly_delays_subway %>%
+  full_join(hourly_delays_bus, by = "Hour")
+
+# Reshape data for average delays
+hourly_avg_combined_long <- hourly_delays_combined %>%
+  pivot_longer(cols = starts_with("Mean"), 
+               names_to = "Type", 
+               values_to = "Mean_Delay") %>%
+  mutate(Type = recode(Type, 
+                       "Mean_Delay_Subway" = "Subway", 
+                       "Mean_Delay_Bus" = "Bus"))
+
+# Plot 1: Average delays by hour of day (combined subway and bus)
+ggplot(hourly_avg_combined_long, aes(x = factor(Hour), y = Mean_Delay, fill = Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Average Delays by Hour of Day (Subway vs Bus)", 
+       x = "Hour of Day", 
+       y = "Average Delay (Minutes)", 
+       fill = "Type") +
+  scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
+  theme_minimal() +
+  theme(legend.position = "top", 
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+
+# Reshape data for total delays
+hourly_delays_combined_long <- hourly_delays_combined %>%
+  pivot_longer(cols = starts_with("Total"), 
+               names_to = "Type", 
+               values_to = "Total_Delay") %>%
+  mutate(Type = recode(Type, 
+                       "Total_Delay_Subway" = "Subway", 
+                       "Total_Delay_Bus" = "Bus"))
+
+# Plot 2: Total delays by hour of day (combined subway and bus)
+ggplot(hourly_delays_combined_long, aes(x = factor(Hour), y = Total_Delay, fill = Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Total Delays by Hour of Day (Subway vs Bus)", 
+       x = "Hour of Day", 
+       y = "Total Delay (Minutes)", 
+       fill = "Type") +
+  scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
+  theme_minimal() +
+  theme(legend.position = "top", 
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+What’s Changed:
+Plot 1 (Mean Delays): Now appears first.
+Plot 2 (Total Delays): Now follows the mean delays plot.
+Aesthetic Consistency: Both plots still use the same color scheme and style for consistency.
+Summary of Plots:
+Mean Delays by Hour: The first plot shows the average delays for subway and bus by hour of the day.
+Total Delays by Hour: The second plot shows the total delays for both subway and bus by hour.
+This should now present the mean delay graph first, as requested. Let me know if you need any further refinements!
+
+
+
+
+
+
+You said:
+now give me a plot where the total delays for 6-9am and 3-7pm are halved
+ChatGPT said:
+ChatGPT
+To create a plot where the total delays for specific time periods (6-9 AM and 3-7 PM) are halved, we'll need to modify the dataset to adjust the delays in those time ranges. After halving the delays, we'll plot the new total delays by hour.
+
+Here’s the process:
+
+Identify the relevant time ranges: 6-9 AM and 3-7 PM.
+Halve the total delays in those time periods.
+Aggregate the modified data by hour and create the plot.
+Code to Adjust Total Delays and Create the Plot
+r
+Copy code
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+busData <- read.csv(here::here("./data/raw_data/raw_data_bus.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+busData$Time <- hm(busData$Time)
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+busData$Hour <- hour(busData$Time)
+
+# Function to halve the delay for specific time ranges (6-9 AM and 3-7 PM)
+adjust_delays <- function(data) {
+  data %>%
+    mutate(Adjusted_Delay = ifelse(Hour %in% 6:9 | Hour %in% 15:19, Min.Delay / 2, Min.Delay))
+}
+
+# Apply the adjustment to both subway and bus data
+subwayData <- adjust_delays(subwayData)
+busData <- adjust_delays(busData)
+
+# Aggregate the adjusted data by hour for total delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Adjusted_Delay, na.rm = TRUE))
+
+hourly_delays_bus <- busData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Bus = sum(Adjusted_Delay, na.rm = TRUE))
+
+# Combine subway and bus data for comparison
+hourly_delays_combined <- hourly_delays_subway %>%
+  full_join(hourly_delays_bus, by = "Hour")
+
+# Reshape data for easier plotting
+hourly_delays_combined_long <- hourly_delays_combined %>%
+  pivot_longer(cols = starts_with("Total"), 
+               names_to = "Type", 
+               values_to = "Total_Delay") %>%
+  mutate(Type = recode(Type, 
+                       "Total_Delay_Subway" = "Subway", 
+                       "Total_Delay_Bus" = "Bus"))
+
+# Plot: Total delays by hour of day (adjusted for halving)
+ggplot(hourly_delays_combined_long, aes(x = factor(Hour), y = Total_Delay, fill = Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Adjusted Total Delays by Hour of Day (Subway vs Bus, 6-9 AM and 3-7 PM Halved)", 
+       x = "Hour of Day", 
+       y = "Total Delay (Minutes)", 
+       fill = "Type") +
+  scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
+  theme_minimal() +
+  theme(legend.position = "top", 
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+Key Adjustments:
+Adjusted_Delay Calculation: The delays in the 6-9 AM and 3-7 PM ranges are halved using ifelse(Hour %in% 6:9 | Hour %in% 15:19, Min.Delay / 2, Min.Delay).
+Aggregation: After adjusting, the total delays are recalculated for each hour.
+Plot: The resulting plot shows the adjusted total delays for both subway and bus systems.
+Expected Outcome:
+6-9 AM and 3-7 PM delays will appear reduced (halved) compared to the original data.
+The rest of the day will remain unchanged.
+This approach creates a visualization that highlights how delay reductions in peak periods affect the overall total delays by hour. Let me know if you need further changes!
+
+
+
+
+
+
+You said:
+what about only for subway data?
+
+2/2
+
+ChatGPT said:
+ChatGPT
+To create a plot where only the subway data has the total delays for the 6-9 AM and 3-7 PM time periods halved, we can modify the dataset just for the subway system. Here’s the updated version of the code that focuses exclusively on subway data:
+
+Updated Code for Subway Data Only
+r
+Copy code
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+
+# Function to halve the delay for specific time ranges (6-9 AM and 3-7 PM)
+adjust_subway_delays <- function(data) {
+  data %>%
+    mutate(Adjusted_Delay = ifelse(Hour %in% 6:9 | Hour %in% 15:19, Min.Delay / 2, Min.Delay))
+}
+
+# Apply the adjustment to subway data
+subwayData <- adjust_subway_delays(subwayData)
+
+# Aggregate the adjusted data by hour for total delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Adjusted_Delay, na.rm = TRUE))
+
+# Plot: Adjusted total subway delays by hour of day
+ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Adjusted Total Subway Delays by Hour of Day (6-9 AM and 3-7 PM Halved)", 
+       x = "Hour of Day", 
+       y = "Total Delay (Minutes)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+What this Code Does:
+Subway-Specific Adjustments: Only subway data is being modified. Delays in the 6-9 AM and 3-7 PM time ranges are halved.
+Delay Adjustment: The Adjusted_Delay column is created, applying the halving logic where relevant (Hour %in% 6:9 | Hour %in% 15:19).
+Aggregated Total Delay: The total delay for each hour is recalculated based on the adjusted delays.
+Plot: A bar plot shows the total adjusted delays for each hour of the day, focusing solely on the subway system.
+Expected Result:
+The delays in the 6-9 AM and 3-7 PM time ranges will be visibly reduced.
+Other hours will remain unchanged.
+The plot will display only subway data.
+This ensures that the delay adjustment applies only to the subway, and the visualization reflects this change clearly. Let me know if you'd like further adjustments!
+
+
+
+
+
+
+You said:
+# Reshape data for total delays
+hourly_delays_combined_long <- hourly_delays_combined %>%
+  pivot_longer(cols = starts_with("Total"), 
+               names_to = "Type", 
+               values_to = "Total_Delay") %>%
+  mutate(Type = recode(Type, 
+                       "Total_Delay_Subway" = "Subway", 
+                       "Total_Delay_Bus" = "Bus"))
+
+# Plot 2: Total delays by hour of day (combined subway and bus)
+ggplot(hourly_delays_combined_long, aes(x = factor(Hour), y = Total_Delay, fill = Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Total Delays by Hour of Day (Subway vs Bus)", 
+       x = "Hour of Day", 
+       y = "Total Delay (Minutes)", 
+       fill = "Type") +
+  scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
+  theme_minimal() +
+  theme(legend.position = "top", 
+        plot.title = element_text(hjust = 0.5, face = "bold"))
+
+what about htis total delays with only subways?
+ChatGPT said:
+ChatGPT
+If you want the total delays plot but only for subway data, you can simplify the code by focusing exclusively on the subway dataset and removing the bus data references. Here's how to modify the code to reflect total delays for subway only:
+
+Updated Code for Subway Total Delays Only
+r
+Copy code
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(here)
+
+# Load the subway data
+subwayData <- read.csv(here::here("./data/raw_data/raw_data.csv"))
+
+# Convert the Time column to a proper time format
+subwayData$Time <- hm(subwayData$Time)  # Parse 'Time' as hours and minutes
+
+# Extract the hour from the Time column
+subwayData$Hour <- hour(subwayData$Time)
+
+# Aggregate the data by hour for total delays
+hourly_delays_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE))
+
+# Plot: Total subway delays by hour of day
+ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Total Subway Delays by Hour of Day", 
+       x = "Hour of Day", 
+       y = "Total Delay (Minutes)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+What This Code Does:
+Subway Data Only: We only load and work with the subway data.
+Total Delay Calculation: The total delay per hour (Total_Delay_Subway) is calculated by summing the Min.Delay values for each hour.
+Bar Plot: A simple bar plot shows the total subway delays for each hour of the day.
+No Bus Data: The code removes all bus-related data and focuses solely on subway.
+Plot Output:
+The resulting plot will display the total delays per hour for subway services only.
+The delays are grouped by hour of the day on the x-axis, and the total delay in minutes on the y-axis.
+Let me know if you'd like further adjustments!
