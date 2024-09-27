@@ -1,38 +1,67 @@
 ---
-title: "TTC delays: when they happen and how to be punctual"
+title: "Rush hour subways surprisingly excel at punctuality: a closer look at TTC Delays"
 subtitle: "Insight into when delays disproportionately tend to happen and related statistics"
 author: 
   - Andrew Goh
-thanks: "Code and data are available at: LINK. @talia, @thereferencecanbewhatever, @dplyr were used in this paper."
+thanks: "Code and data are available at: https://github.com/mushroomcarbon/TTCDelays."
 date: today
 date-format: long
-abstract: "This paper uses data from Open Data Toronto (@opendatatoronto) on TTC subway and bus
-delays to analyze how the delays are generally distributed w.r.t. the time of day. Mean, total, and adjusted
-statistics are graphed and discussed to reach a conclusion."
+abstract: "This paper uses data from Open Data Toronto on TTC subway and bus
+delays to analyze how the delays are generally distributed w.r.t. the time of day. Mean, total, and adjusted statistics were graphed, leading to the conclusions that subways are almost always
+more punctual than buses, peak hour leads to the fewest delays, and leaving 10-15 minutes earlier is a safe margin of error for delays. The conclusions of this paper provide a practical, actionable set of guidelines on how citizens can ensure/maximize punctuality when using the TTC to go about the city, as well as potential insight into where resources can be invested in to increase TTC efficiency the most."
 format: pdf
 number-sections: true
 bibliography: references.bib
+header-includes:
+  - \usepackage{placeins}
 ---
 
 # Introduction
 
-The TTC, as Toronto's primary public transport network, is the means for many
-to get about in the city. At an annual cost of ~$1.4k CAD, it remains the vastly more 
-economical means of transport in Toronto, especially compared to driving costs
-averaging $13k-16k per year, according to a CAA estimate by the @ttc_know_your_ttc.
+The TTC, as Toronto's primary public transport network, is how 1.2 million people (@ttc_overview) get about the city every day. With its network of subways, the average TTC rider will be less affected by traffic than the average driver is, but unfortunately, delays act as public transport's traffic counterpart. And while individuals have their own ways to consistently remain punctual, there remains a lack of objective analysis regarding TTC delays. To fill this gap, we look into TTC data to determine just when and how delays happen, as well as how individuals can best make use of this information.
 
-With its network of subways, the average TTC rider will be, comparatively, less affected by traffic as
-the average driver is, but all is not always smooth sailing with the TTC either. Delays, whether
-it be in the bus or subway systems, are decently common in the TTC family of transportation devices,
-with each delay potentially ruining an hour's worth of brisk preparation and a day's worth of planning.
+Data on TTC delays for both subways and buses was obtained from opendatatoronto, then analysed and graphed. The delays were graphed both by mean delay time and total delay time (minutes) against the time of day (hour) to more intuitively see how the two explanatory variables, namely the type of transportation (subway/bus) and time of day (hour), affected various aspects of the delay experienced. Data was then adjusted for the difference in subway frequencies during peak vs. off hours and then graphed. 
 
-While everyone has their own understanding of delays, with discrepancies amplified by personal
-experience and survivor's bias, we look into the data to determine just when and how delays happen.
+From the graphs, we conclude that the mean delay times of buses is significantly higher than that of subways, whereas both transportation types have similar mean delays w.r.t. the time of day. Total delay times are higher during peak hours, but when accounting for the ~doubled amount of subways running during that time, peak hour subways actually end up being the least delayed ones on average. The significance of insight into public transportation delays lies both individually and socially: individuals can learn to better plan their trips to remain punctual in the event of delays, and considering how TTC delays can impact productivity as a whole on a large scale, governments and corporations alike can utilise this information to better manage resources to increase efficiency.
+
+The paper begins by introducing and viewing the dataset used, as well as analysing collection methodologies, larger contexts, as well as how the data was processed in Section 2. We then continue by graphing the data and discussing some preliminary insights regarding the visuals. In Section 3, we discuss the results of the data in a more in-depth fashion, as well as highlighting some key insights extrapolated from the previous analysis. The section then concludes by acknowledging the limitations of the study and discussing ways to further the research.
 
 # Data {#sec-mydatasection}
 
-Armed with the simple driving question of how I can reduce delays in my day-to-day transits,
-we first graph the mean subway and bus delay data (@fig-times-mean) to have a broad understanding of the data.
+The R programming language (@talia), dplyr (@dplyr), opendatatoronto(@opendatatoronto), and tidyverse(@thereferencecanbewhatever) were used to download, modify, and analyse data obtained from Open Data Toronto. Styler (@styler) was used to style the code. Data used in this paper comes from the "TTC Subway Delays" (@subway_data) and "TTC Bus Delays" (@bus_data) data sets from the Open Data Toronto database, published by the TTC.
+
+The two datasets are similar, providing the same key information: when delays happened (date and time), and how long they were delayed by. Cleaning the data involved removing N/A rows and rows where the delay was 0, then adding a new variable for the hour the delay happened in simply by extracting the hour from the more detailed time information provided. This sums up to 4 variables in the analysis dataset - Date, Time, and Hour describe when the delay happened, and Min Delay describes how long the delay was for, i.e. the difference between the time that the vehicle arrived and the time that the vehicle should have arrived. @tbl-analysis provides a short sample of the cleaned data, which is in the same format for both subway and bus datasets. Raw data for both datasets contained many more descriptors which were not used in this paper and is therefore shown in the Appendix in @tbl-raw-1 and @tbl-raw-2.
+
+<!-- the following table code written with assistance from Yisu Hou: https://github.com/YisuHou1/Toronto-Police-Budget-Statistics -->
+```{r, results='asis', echo=FALSE, fig.pos='H'}
+#| warning: false
+#| message: false
+#| echo: false
+# Load necessary libraries
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+# Read the CSV file and select the first 8 rows
+data <- read.csv(here::here("./data/analysis_data/analysis_data_bus.csv")) %>%
+  slice(18:22)
+
+# Create a kable table with LaTeX format
+data %>%
+  kable("latex",
+    caption = "Sample of cleaned analysis data {#tbl-analysis}",
+    col.names = c("Time", "Date", "Min. Delay", "Hour"),
+    booktabs = TRUE
+  ) %>% # Use booktabs for better formatting
+  kable_styling(latex_options = c("striped", "hold_position")) # Add hold_position for placement
+```
+\FloatBarrier
+Data was taken from 2022-2023 due to the recency - data before 2021 was left out due to COVID-19 affecting statistics and data before COVID too dated for either to be relevant to 2024. There are no similar datasets that could have been used to analyze TTC delays - other TTC datasets don't describe the same thing and therefore can't be used either.
+
+The data was collected via the CIS (communications information system), the TTC's vehicle monitoring system (@methodology). This is done via GPS tracking on latitude-longitude data updated every 20 seconds, with erroneous data being autocorrected by the system. The TTC's method of measurement is reliable due to its high accuracy and error-tolerant nature, lending to the dataset's strong credibility. 
+
+To have a broad understanding of the data, we first graph the summary statistics: @fig-times-mean shows the mean delay w.r.t. the hour, and @fig-times-stdev shows the standard deviations.
+
 ```{r}
 #| label: fig-times-mean
 #| fig-cap: Subway delays w.r.t. time of day
@@ -52,13 +81,17 @@ busData <- read.csv(here::here("./data/analysis_data/analysis_data_bus.csv"))
 # Aggregate data by hour to calculate total and mean delays
 hourly_delays_subway <- subwayData %>%
   group_by(Hour) %>%
-  summarise(Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE), 
-            Mean_Delay_Subway = mean(Min.Delay, na.rm = TRUE))
+  summarise(
+    Total_Delay_Subway = sum(Min.Delay, na.rm = TRUE),
+    Mean_Delay_Subway = mean(Min.Delay, na.rm = TRUE)
+  )
 
 hourly_delays_bus <- busData %>%
   group_by(Hour) %>%
-  summarise(Total_Delay_Bus = sum(Min.Delay, na.rm = TRUE), 
-            Mean_Delay_Bus = mean(Min.Delay, na.rm = TRUE))
+  summarise(
+    Total_Delay_Bus = sum(Min.Delay, na.rm = TRUE),
+    Mean_Delay_Bus = mean(Min.Delay, na.rm = TRUE)
+  )
 
 # Combine subway and bus data for comparison
 hourly_delays_combined <- hourly_delays_subway %>%
@@ -66,31 +99,92 @@ hourly_delays_combined <- hourly_delays_subway %>%
 
 # Reshape data for average delays
 hourly_avg_combined_long <- hourly_delays_combined %>%
-  pivot_longer(cols = starts_with("Mean"), 
-               names_to = "Type", 
-               values_to = "Mean_Delay") %>%
-  mutate(Type = recode(Type, 
-                       "Mean_Delay_Subway" = "Subway", 
-                       "Mean_Delay_Bus" = "Bus"))
+  pivot_longer(
+    cols = starts_with("Mean"),
+    names_to = "Type",
+    values_to = "Mean_Delay"
+  ) %>%
+  mutate(Type = recode(Type,
+    "Mean_Delay_Subway" = "Subway",
+    "Mean_Delay_Bus" = "Bus"
+  ))
 
 # Plot 1: Average delays by hour of day (combined subway and bus)
 ggplot(hourly_avg_combined_long, aes(x = factor(Hour), y = Mean_Delay, fill = Type)) +
   geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Average Delays by Hour of Day (Subway vs Bus)", 
-       x = "Hour of Day", 
-       y = "Average Delay (Minutes)", 
-       fill = "Type") +
+  labs(
+    title = "Average Delays by Hour of Day (Subway vs Bus)",
+    x = "Hour of Day",
+    y = "Average Delay (Minutes)",
+    fill = ""
+  ) +
   scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
   theme_minimal() +
-  theme(legend.position = "top", 
-        plot.title = element_text(hjust = 0.5, face = "bold"))
+  theme(
+    legend.position = "top",
+    plot.title = element_text(hjust = 0.5, face = "bold")
+  )
 ```
-Two main takeaways from the figure: one, that the average magnitude of delays is generally the same over the day, whether it be for subways or buses, and two, that the average delay time for buses is around 4-5 times more than that of subways. This confirms the intuition that subways generally are a more time-reliable way to get somewhere than buses, and we will therefore focus on subways from hereonwards in our quest for the most reliable transit plan.
 
-While we don't know the total frequency of subways and therefore cannot calculate an "average delay per ride" statistic, what we can do is sum up the delay at each hour of day to still obtain an estimator for how much delay you're likely to encounter in a trip during each respective hour, as shown in @fig-times-total. 
+```{r}
+#| label: fig-times-stdev
+#| fig-cap: Standard deviation of subway and bus delays w.r.t. time of day
+#| echo: false
+#| warning: false
+#| message: false
+# Calculate standard deviation for subway and bus data by hour
+hourly_sd_subway <- subwayData %>%
+  group_by(Hour) %>%
+  summarise(
+    StdDev_Delay_Subway = sd(Min.Delay, na.rm = TRUE)
+  )
+
+hourly_sd_bus <- busData %>%
+  group_by(Hour) %>%
+  summarise(
+    StdDev_Delay_Bus = sd(Min.Delay, na.rm = TRUE)
+  )
+
+# Combine subway and bus data for standard deviation comparison
+hourly_sd_combined <- hourly_sd_subway %>%
+  full_join(hourly_sd_bus, by = "Hour")
+
+# Reshape data for standard deviations
+hourly_sd_combined_long <- hourly_sd_combined %>%
+  pivot_longer(
+    cols = starts_with("StdDev"),
+    names_to = "Type",
+    values_to = "StdDev_Delay"
+  ) %>%
+  mutate(Type = recode(Type,
+    "StdDev_Delay_Subway" = "Subway",
+    "StdDev_Delay_Bus" = "Bus"
+  ))
+
+# Plot 2: Standard deviation of delays by hour of day (combined subway and bus)
+ggplot(hourly_sd_combined_long, aes(x = factor(Hour), y = StdDev_Delay, fill = Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    title = "Standard Deviation of Delays by Hour of Day (Subway vs Bus)",
+    x = "Hour of Day",
+    y = "Standard Deviation of Delay (Minutes)",
+    fill = ""
+  ) +
+  scale_fill_manual(values = c("Subway" = "steelblue", "Bus" = "tomato")) +
+  theme_minimal() +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(hjust = 0.5, face = "bold")
+  )
+```
+\FloatBarrier
+From the mean graph (@fig-times-mean) we can see that 1. the average magnitude of delays is generally homogeneous within transportation categories, and that 2. the average delay times for buses is around 4-5 times more than that of subways. This confirms the intuition that subways are generally more time-reliable than buses, and we will therefore focus on subways from hereonafter to find the ideal, delay-minimising way of transport. The standard deviation graph (@fig-times-stdev) shows that the standard deviation of both bus and subway delays are all larger than the means of the respective measurements. This suggests that the mean itself, while still an accurate estimate of typical delays, holds less practical significance as a benchmark for normalisation (i.e. leaving x minutes early to offset delay).
+
+While there is no data regarding the total number of subway trips and therefore cannot calculate an "average delay per ride" statistic, it is still possible to sum up the delay at each hour of day to obtain an estimator for the relative amount of delay encountered during each respective hour, as shown in @fig-times-total. 
+
 ```{r}
 #| label: fig-times-total
-#| fig-cap: total delay times
+#| fig-cap: Total delay times of the TTC subway system per hour
 #| echo: false
 
 library(tidyverse)
@@ -109,14 +203,16 @@ hourly_delays_subway <- subwayData %>%
 
 ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
   geom_bar(stat = "identity", fill = "steelblue") +
-  labs(title = "Total Subway Delays by Hour of Day", 
-       x = "Hour of Day", 
-       y = "Total Delay (Minutes)") +
+  labs(
+    title = "Total Subway Delays by Hour of Day",
+    x = "Hour of Day",
+    y = "Total Delay (Minutes)"
+  ) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, face = "bold"))
 ```
-From the data here, it seems that 8-9am and 3-5pm seem to be the worst offenders, which would suggest that
-transit during these times is the most prone to delays. According to the @ttc_line_1_schedule, though, subways run at approximately double the frequency during these rush hours, accounting for the increase in total delay times by sheer volume. Finally, adjusting for this by halving the relative delay times for the aforementioned rush hours (6-9am, 3-7pm), we obtain @fig-times-adjusted.
+\FloatBarrier
+The data in @fig-times-total singles out 6-9am and 4-6pm to be the worst offenders, suggesting the conclusion that peak hour riders are the most susceptible to TTC-induced tardiness. According to the @ttc_line_1_schedule, though, subways run at approximately double the frequency during these rush hours, accounting for the increase in total delay times by sheer volume. Adjusting for this by halving the relative delay times for the aforementioned rush hours (6-9am, 3-7pm), we obtain @fig-times-adjusted, the adjusted total delay graph.
 
 ```{r}
 #| label: fig-times-adjusted
@@ -149,23 +245,80 @@ hourly_delays_subway <- subwayData %>%
 # Plot: Adjusted total subway delays by hour of day
 ggplot(hourly_delays_subway, aes(x = factor(Hour), y = Total_Delay_Subway)) +
   geom_bar(stat = "identity", fill = "steelblue") +
-  labs(title = "Total Subway Delays by Hour of Day Adjusted for Capacity", 
-       x = "Hour of Day", 
-       y = "Delay (Minutes)") +
+  labs(
+    title = "Total Subway Delays by Hour, Adjusted for Capacity",
+    x = "Hour of Day",
+    y = "Delay (Minutes)"
+  ) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, face = "bold"))
-
 ```
-
+\FloatBarrier
 # Discussion
 
-Surprisingly, peak hours are the most consistent hours of them all, at least when compared to the off-hours of the TTC.
-A potential reason for this could be the higher-stress situation leading to tighter schedules, the lack of shift changes, or even the general alertness of drivers, among others - this, however, is not the focus nor concern of our current investigation.
+Looking at @fig-times-adjusted, peak hours are, surprisingly, the least affected by delays on average. Combining this with previous conclusions, we get that peak-hour subways are the most time-reliable vehicles of the TTC. A potential reason for this could be the higher-stress situation leading to tighter schedules, the lack of shift changes, or even the general alertness of drivers, among others - this, however, is not the focus nor concern of our current investigation.
 
-As to the average delay amount, given that a delay happens, we look at average ridership data from @metrolinx_rtp and @average_distance, stating that "local" trips take around 4.2km on average. Average distance between stations, calculated using data from @ttc_conventional_system_2023, is 70 stations / 70.1km for approximately 1km per station (on average) and a resulting average of around 4 stations per trip. 
+The simple conclusion of this is that students and workers regularly making use of the peak hour subways have no need to change their TTC usage - individuals making more flexible plans, however, are incentivised to head out during peak hours instead of avoiding them, if speed is the key concern.
 
-Assuming a carry-over delay for your specific subway arriving at each of the 4 stations, we conclude that for the average trip during peak hour, leaving 10-15 minutes early is a fairly safe margin to ensure punctual arrival even in the case of delays.
+A key implication of this that ties into the broader context is that with the limited resources of the TTC (@ttc_conventional_system_2023), focusing more resources into peak hours rather than spreading them out evenly is the most economic decision, barring other considerations: peak hour subways manage the highest efficiency of all lines currently, whether it be with respect to passenger load or time to arrival; therefore, increasing the frequency of peak-hour subways would do the most to reduce passengers' times in transit and increase the city's functionality as a whole.
+
+A key question that remains, however, is how individuals can best use this data to inform their own travels. As mentioned in Section 2, a high standard deviation suggests that a simple mean offset is insufficient/nonideal to offset the effect of delays. Considering how delays are measured, however, notice how a single subway would rack up delays as it operates - if its arrival at station 1 is delayed by 5 minutes, for example, its successive arrivals to future stations will all also reflect this "carried-over" delay. Subway delays, therefore, follow a roughly monotononically increasing pattern, which would largely explain the disproportionately large standard deviation.
+
+To better estimate the average delay amount given that a delay happens, we look at average ridership data from @metrolinx_rtp and @average_distance, stating that "local" trips take around 4.2km on average. Average distance between stations, calculated using data from the @ttc_conventional_system_2023, is 70 stations / 70.1km for approximately 1km per station (on average) and a resulting average of around 4 stations per trip. 
+
+Accounting for the previously mentioned carry-over delay for the specific subway arriving at each of the 4 stations, we conclude that for the average trip during peak hour, leaving 10-15 minutes early is a fairly safe margin to ensure punctual arrival even in the case of delays, doubling this value to account for extra stations (20-30 minutes extra for an 8-station trip, for example).
+
+# Limitations and further research
+
+A limitation of this paper is how, as mentioned in Section 2, there is a lack of information on the absolute (as opposed to relative) frequency of subway trips. This means that average-case scenarios can only be calculated in the conditional case (i.e. "given that a delay happens"), rather than factoring for the total probability of delays happening. A further limitation is the lack of the most recent data - data from 2024 was omitted to avoid introducing bias to the model due to the year, as the data from 2024 is missing data from the final three months for obvious reasons. A repeat of the study, conducted on the complete 2024 dataset after september, could better reflect recent trends and patterns.
+
+Future studies could focus on the omitted columns from the raw data, analysing how factors such as the station where delays happen, model of bus, and direction of travel affect the magnitude of delays. Adding more variables to the analysis would likely improve the insights obtained from the data - fitting a statistical model (ANOVA, KMeans, etc.) could also be a potential route to take to obtain some more precise, methodical conclusions.
+
 \newpage
+# Appendix
 
+```{r, echo=FALSE, fig.pos='H'}
+#| warning: false
+#| message: false
+#| echo: false
+# Load necessary libraries
+library(tidyverse)
+library(knitr)
+library(kableExtra)
 
+# Read the CSV file and select the first 8 rows
+data <- read.csv(here::here("./data/raw_data/raw_data.csv")) %>%
+  slice(1:8)
+
+# Split the data into two parts
+data1 <- data %>% select(Date, Time, Day, Station, Code) # First half of the columns
+data2 <- data %>% select(`Min.Delay`, `Min.Gap`, Bound, Line, Vehicle) # Second half of the columns
+
+# Create the first table
+table1 <- data1 %>%
+  kable("latex",
+    caption = "Sample of raw data {#tbl-raw-1}",
+    col.names = c("Date", "Time", "Day", "Station", "Code"),
+    booktabs = TRUE
+  ) %>%
+  kable_styling(latex_options = c("striped", "hold_position"))
+table1
+```
+
+```{r, echo=FALSE, fig.pos='H'}
+#| warning: false
+#| message: false
+#| echo: false
+#|
+table2 <- data2 %>%
+  kable("latex",
+    caption = "Sample of raw data (continued) {#tbl-raw-2}",
+    col.names = c("Min Delay", "Min Gap", "Bound", "Line", "Vehicle"),
+    booktabs = TRUE
+  ) %>%
+  kable_styling(latex_options = c("striped", "hold_position"))
+table2
+```
+
+\newpage
 # References
