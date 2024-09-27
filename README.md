@@ -1,8 +1,8 @@
-# Insights on TTC Delays
+# Rush hour subways surprisingly excel at punctuality: a closer look at TTC Delays
 
 ## Overview
 
-This repo contains all the scripts, data, and files related to the creation of the paper "TTC delays: when they happen and how to be punctual".
+This repo contains all the scripts, data, and files related to the creation of the paper "Rush hour subways surprisingly excel at punctuality: a closer look at TTC Delays".
 
 
 ## File Structure
