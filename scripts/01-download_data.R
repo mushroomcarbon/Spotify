@@ -1,6 +1,6 @@
 #### Preamble ####
 # Purpose: Downloads and saves the data from Spotify
-# Author: Andrew Goh
+# Author: Andrew Goh, Yisu Hou, Jiwon Choi
 # Date: 10 October 2024
 # Contact: andrew.goh@mail.utoronto.ca
 # License: MIT

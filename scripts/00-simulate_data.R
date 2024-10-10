@@ -1,7 +1,7 @@
 #### Preamble ####
 # Purpose: Simulates data
-# Author: Andrew Goh
-# Date: 19 September 2024
+# Author: Andrew Goh, Yisu Hou, Jiwon Choi
+# Date: 10 October 2024
 # Contact: andrew.goh@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: None

@@ -1,6 +1,6 @@
 #### Preamble ####
 # Purpose: Cleans the raw delay data into an analysis dataset
-# Author: Andrew Goh
+# Author: Andrew Goh, Yisu Hou, Jiwon Choi
 # Date: 10 October 2024
 # Contact: andrew.goh@utoronto.ca
 # License: MIT
