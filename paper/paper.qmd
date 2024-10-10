@@ -104,3 +104,6 @@ ggplot(data, aes(x = album_release_year, y = valence)) +
 ```
 \FloatBarrier
 
+\newpage
+
+# References
