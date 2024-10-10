@@ -23,6 +23,15 @@ Write Introduction here
 
 The R programming language [@talia], dplyr [@dplyr], tidyverse[@thereferencecanbewhatever] were used to download, modify, and analyse data obtained from Spotify [@spotify_api] using the SpotifyR package [@spotifyr] regarding music from The National [@the_national]. Styler [@styler] was used to style the code.
 
+Variable Measurements:
+
+Danceability: This metric quantifies how suitable a track is for dancing, ranging from 0.0 to 1.0. It considers elements such as tempo, rhythm stability, beat strength, and overall regularity, all influencing a track's likelihood of encouraging dancing.
+
+Energy: Energy is also measured on a scale from 0.0 to 1.0, reflecting the intensity and activity within a track. High-energy songs are typically fast-paced, loud, and noisy, while lower-energy tracks are slower and more relaxed. Energy is influenced by elements such as dynamic range, perceived loudness, and tempo.
+
+Instrumentalness: This attribute measures the probability of a track being purely instrumental, also ranging from 0.0 to 1.0. The closer the value is to 1.0, the greater the likelihood that the track contains no vocals. Tracks with values above 0.5 are considered more likely to be instrumental.
+
+Valence: Valence refers to the musical positivity or happiness conveyed by a track, again measured from 0.0 to 1.0. Tracks with high valence sound more positive (e.g., happy, cheerful, euphoric), while those with low valence sound more negative or somber (e.g., sad, melancholic).
 
 ```{r}
 #| label: fig-dance
@@ -103,6 +112,16 @@ ggplot(data, aes(x = album_release_year, y = valence)) +
   theme_minimal()
 ```
 \FloatBarrier
+
+# Discussion
+
+Spotify’s API uses algorithms to estimate these musical attributes, but like any automated system, these measurements come with inherent limitations:
+
+Danceability and Energy are listed as variable measurements since these metrics are useful, they are influenced by a combination of tempo, rhythm, and loudness, which are subjectively perceived by listeners. This can introduce bias, as not all listeners may agree with the "danceability" or "energy" rating that Spotify assigns to a track. In addition, The measurement of instrumentals is more straightforward but can still be prone to misclassification, especially in tracks where vocals are used in a non-traditional or minimalistic manner (e.g., vocal samples used as an instrument rather than for lyrics). Finally, valence is perhaps the most subjective metric, as it attempts to quantify the emotional tone of a track. The algorithm uses musical cues like key, tempo, and mood, but it cannot fully account for lyrical content or the cultural context of the music, which are often significant factors in how a song's emotion is perceived by listeners.
+
+Certain limitations include algorithmic bias, where all the measurements result from machine learning algorithms that may not fully capture the nuanced emotional or structural qualities of music. While these algorithms are highly advanced, they are still based on mathematical models that may overlook certain cultural, lyrical, or artistic nuances. Another limitation would be the subjectivity of musical interpretation. Under this scenario, music is a subjective art form, and attributes like energy or valence are influenced by listener interpretation. Thus, there may be discrepancies between what the algorithm detects and what different audiences perceive. For example, a song with low valence may still evoke positive emotions depending on the listener's personal experiences. Eventually, temporal and contextual variability as Spotify’s measurements are static, meaning they don't account for how the perception of a track might change over time or in different contexts. A song may be considered more "danceable" or "happy" depending on where or when it's played, which is not captured in this type of analysis.
+
+By recognizing these limitations, we can more critically engage with the data, understanding that while useful, these metrics provide only one dimension of analysis. Future work could incorporate qualitative assessments or crowd-sourced data to cross-check and complement these algorithmically generated insights.
 
 \newpage
 
