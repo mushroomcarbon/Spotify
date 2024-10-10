@@ -23,4 +23,3 @@ is.double(data$danceability)
 is.double(data$energy)
 is.double(data$instrumentalness)
 is.double(data$valence)
-

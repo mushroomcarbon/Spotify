@@ -1,14 +1,12 @@
 ---
-title: "Rush hour subways surprisingly excel at punctuality: a closer look at TTC Delays"
-subtitle: "Insight into when delays disproportionately tend to happen and related statistics"
+title: "Analyzing The National's Musical Trajectory from 2001 to 2023"
+subtitle: "A Spotify Data Analysis of Danceability, Energy, Instrumentalness, and Valence Trends"
 author: 
-  - Andrew Goh, Yisu Hou, Jiwon Choi
-thanks: "Code and data are available at: https://github.com/mushroomcarbon/TTCDelays."
+  - Andrew Goh, Yisu Hou, Jiwon Choi, Xiaolu Ji
+thanks: "Code and data are available at: https://github.com/mushroomcarbon/Spotify."
 date: today
 date-format: long
-abstract: "This paper uses data from Open Data Toronto on TTC subway and bus
-delays to analyze how the delays are generally distributed w.r.t. the time of day. Mean, total, and adjusted statistics were graphed, leading to the conclusions that subways are almost always
-more punctual than buses, peak hour leads to the fewest delays, and leaving 10-15 minutes earlier is a safe margin of error for delays. The conclusions of this paper provide a practical, actionable set of guidelines on how citizens can ensure/maximize punctuality when using the TTC to go about the city, as well as potential insight into where resources can be invested in to increase TTC efficiency the most."
+abstract: "This study analyzes the evolution of musical attributes in The National’s discography, focusing on danceability, energy, instrumentalness, and valence across their album releases. Using data from Spotify’s API, we analyze how these attributes have fluctuated over the years and visualize their progression through a series of plots. Our findings suggest that energy and instrumentalness exhibit more variability, while danceability and valence have followed relatively smoother trajectories. These insights contribute to the growing field of music analytics by offering a deeper understanding of the artistic and sonic evolution of a famous band within the indie rock genre."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -16,14 +14,14 @@ header-includes:
   - \usepackage{placeins}
 ---
 
+
 # Introduction
 
 Write Introduction here
 
 # Data {#sec-mydatasection}
 
-The R programming language (@talia), dplyr (@dplyr), opendatatoronto(@opendatatoronto), and tidyverse(@thereferencecanbewhatever) were used to download, modify, and analyse data obtained from Open Data Toronto. Styler (@styler) was used to style the code. Data used in this paper comes from the "TTC Subway Delays" (@subway_data) and "TTC Bus Delays" (@bus_data) data sets from the Open Data Toronto database, published by the TTC.
-
+The R programming language [@talia], dplyr [@dplyr], tidyverse[@thereferencecanbewhatever] were used to download, modify, and analyse data obtained from Spotify [@spotify_api] using the SpotifyR package [@spotifyr] regarding music from The National [@the_national]. Styler [@styler] was used to style the code.
 
 
 ```{r}
@@ -38,12 +36,12 @@ library(dplyr)
 library(here)
 
 # Load the data
-data <- read_rds(here::here("data/the_national.rds"))
+data <- read_rds(here::here("data/analysis_data/the_national_cleaned.rds"))
 
 # Plot 1: danceability over time
 ggplot(data, aes(x = album_release_year, y = danceability)) +
-  geom_point(alpha = 0.7, color = "black") + 
-  stat_summary(fun = mean, geom = "line", color = "green", size = 1.2) + 
+  geom_point(alpha = 0.7, color = "black") +
+  stat_summary(fun = mean, geom = "line", color = "green", size = 1.2) +
   labs(
     x = "Album Release Year",
     y = "Danceability"

@@ -16,11 +16,13 @@ data <- read_rds(here::here("data/raw_data/the_national.rds"))
 
 # Ensure that variables of interest are doubles, removing rows if not
 data <- data %>%
-  filter(is.double(album_release_year),
-         is.double(danceability),
-         is.double(energy),
-         is.double(instrumentalness),
-         is.double(valence))
+  filter(
+    is.double(album_release_year),
+    is.double(danceability),
+    is.double(energy),
+    is.double(instrumentalness),
+    is.double(valence)
+  )
 
 # Save the cleaned data back to the .rds file
 saveRDS(data, here::here("data/analysis_data/the_national_cleaned.rds"))

@@ -12,5 +12,3 @@ library(tidyverse)
 
 the_national <- get_artist_audio_features("the national")
 saveRDS(the_national, "data/the_national.rds")
-
-
