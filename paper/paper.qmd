@@ -21,7 +21,7 @@ In recent years, the music analytics field has advanced significantly, providing
 
 # Data {#sec-mydatasection}
 
-The R programming language [@talia], dplyr [@dplyr], tidyverse[@thereferencecanbewhatever] were used to download, modify, and analyse data obtained from Spotify [@spotify_api] using the SpotifyR package [@spotifyr] regarding music from The National [@the_national]. Styler [@styler] was used to style the code.
+The R programming language [@talia], dplyr [@dplyr], tidyverse[@thereferencecanbewhatever] were used to download, modify, and analyse data obtained from Spotify [@spotify_api] using the SpotifyR package [@spotifyr] regarding music from The National [@the_national]. Styler [@styler] was used to style the code. Summary statistics for variables of interest are displayed in @tbl-summary. It was created with R packages knitr [@knitr] and kableExtra [@kextra].
 
 Variable Measurements:
 
@@ -43,6 +43,8 @@ Valence: Valence refers to the musical positivity or happiness conveyed by a tra
 library(tidyverse)
 library(dplyr)
 library(here)
+library(knitr)
+library(kableExtra)
 
 # Load the data
 data <- read_rds(here::here("data/analysis_data/the_national_cleaned.rds"))
@@ -133,6 +135,43 @@ Danceability and Energy are listed as variable measurements since these metrics 
 Certain limitations include algorithmic bias, where all the measurements result from machine learning algorithms that may not fully capture the nuanced emotional or structural qualities of music. While these algorithms are highly advanced, they are still based on mathematical models that may overlook certain cultural, lyrical, or artistic nuances. Another limitation would be the subjectivity of musical interpretation. Under this scenario, music is a subjective art form, and attributes like energy or valence are influenced by listener interpretation. Thus, there may be discrepancies between what the algorithm detects and what different audiences perceive. For example, a song with low valence may still evoke positive emotions depending on the listener's personal experiences. Eventually, temporal and contextual variability as Spotify’s measurements are static, meaning they don't account for how the perception of a track might change over time or in different contexts. A song may be considered more "danceable" or "happy" depending on where or when it's played, which is not captured in this type of analysis.
 
 By recognizing these limitations, we can more critically engage with the data, understanding that while useful, these metrics provide only one dimension of analysis. Future work could incorporate qualitative assessments or crowd-sourced data to cross-check and complement these algorithmically generated insights.
+
+\newpage
+
+# Appendix {.unnumbered}
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: Summary Statistics of Variables of Interest
+#| echo: false
+#| warning: false
+#| message: false
+
+summary <- data %>%
+  summarise(
+    across(
+      c(album_release_year, danceability, energy, instrumentalness, valence),
+      list(
+        Mean = ~ round(mean(.), 2),
+        SD = ~ round(sd(.), 2)
+      ),
+      .names = "{col}_{fn}"
+    )
+  )
+
+summary_table <- summary %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "Statistic",
+    values_to = "Value"
+  )
+
+kable(summary_table,
+  col.names = c("Statistic", "Value"),
+  format = "latex"
+) %>%
+  kable_styling(latex_options = c("striped", "hold_position"))
+```
 
 \newpage
 
